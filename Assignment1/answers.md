@@ -48,8 +48,8 @@ Ans: 	Robotics, particularly manufacturing and medical robotics, could benefit f
 (4) Extra Credit: Invent a simple (but non-trivial) game of your own. Write a GDL rulesheet for the game. Create a Javascript stylesheet for your game. (Look at the games in Arena for some examples of rulesheets and stylesheets.) Use the Gametester to play a match of your game. Note that you will need to paste your rulesheet and stylesheet into the Game pane of the Gametester page in order for them to be used. Then click Initialize and play away. Submit an English description of your game. Be prepared to show your rulesheet and stylesheet to the TAs.
 
 
-Ans:
+Ans: see attachments
 
 (5) Extra points this quarter to anyone who comes up with a game that promotes the idea of general game playing to the general public - an online game or, even better, some sort of physical game.
 
-Ans:
+Ans: 
