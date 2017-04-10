@@ -52,4 +52,4 @@ Ans: see attachments
 
 (5) Extra points this quarter to anyone who comes up with a game that promotes the idea of general game playing to the general public - an online game or, even better, some sort of physical game.
 
-Ans: 
+Ans: There are many online platforms to play chess. We could imagine a platform for players to play various versions of chess, but the players do not know which version until the beginning of the game. Given the multiple variations available and popularity of the general framework of chess this could draw large number of participants, and hence promotes the idea of general game playing to the public. One could also imagine a physical deck of cards, marketed as a supplement to already-well-distributed chess sets, where each card contains the rules of some chess variant.
