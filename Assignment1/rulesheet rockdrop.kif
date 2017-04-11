@@ -5,23 +5,20 @@
 ;;; Components
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(role white)
-(role black)
+	(role white)
+	(role black)
 
-(<= (base (cell ?m ?n x)) (index ?m) (index ?n))
-    (<= (base (cell ?m ?n o)) (index ?m) (index ?n))
-    (<= (input ?r noop) (role ?r))
-    (base (control white))
-    (base (control black))
-		(base (step 1))
+	(<= (base (cell ?m ?n x)) (index ?m) (index ?n))
+    (<= (base (cell ?m ?n b)) (index ?m) (index ?n))
+	(base (step 1))
   	(base (step 2))
   	(base (step 3))
-		(base (step 4))
+	(base (step 4))
   	(base (step 5))
   	(base (step 6))
 
-    (<= (input ?r (mark ?m ?n)) (role ?r) (index ?m) (index ?n))
-    (<= (input ?r (mark ?m ?n)) (role ?r) (index ?m) (index ?n))
+    (<= (input ?r (move ?m ?n)) (role ?r) (index ?m) (index ?n))
+    (<= (input ?r (drop ?m ?n)) (role ?r) (index ?m) (index ?n))
 
     (index 1)
     (index 2)
@@ -40,90 +37,81 @@
     (init (cell 3 1 b))
     (init (cell 3 2 b))
     (init (cell 3 3 b))
-    (init (control white))
-		(init (step 1))
+	(init (step 1))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; legal
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-	  (<= (legal ?w (mark ?x ?y))
-	      (true (control ?w))
+	  (<= (legal white (move ?x ?y))
+	      (true (cell ?x ?y b)))
 
-	  (<= (legal white noop)
-	      (true (control black)))
+	  (<= (legal black (drop ?x ?y))
+	      (true (cell ?x ?y b)))
 
-	  (<= (legal black noop)
-	      (true (control white)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; next
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
     (<= (next (cell ?m ?n x))
-        (does white (mark ?m ?n))
+        (does white (move ?m ?n)))
 
     (<= (next (cell ?m ?n o))
-        (does black (mark ?m ?n))
+        (does black (drop ?m ?n)))
 
-    (<= (next (cell ?m ?n ?w))
-        (true (cell ?m ?n ?w))
-        (distinct ?w b))
+	(<= (next (cell ?m ?n b))
+        (true (cell ?m ?n b))
+		(not(does black (drop ?m ?n)))
+		(not(does white (move ?m ?n))))
 
-    (<= (next (control white))
-        (true (control black)))
+	(<= (collision)
+        (does white (move ?m ?n))
+		(does black (drop ?m ?n)))
 
-    (<= (next (control black))
-        (true (control white)))
-
-		(<= (row ?m ?n ?x ?y)
-        (true (cell ?m ?n ?x))
-        (true (cell ?m ?n ?y))
-
-
-    (<= open (true (cell ?m ?n b)))
-		(<= (next (step ?n)) (true (step ?m)) (successor ?m ?n))
+	(<= (next (step ?n)) (true (step ?m)) (successor ?m ?n))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; goal
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
     (<= (goal white 100)
-        (not(row m n x y))
-        (step 6)
+        (not(collision))
+        (step 6))
 
-    (<= (goal white 50)
-			(not(row m n x y))
-			(not(step 6))
+	(<= (goal white 50)
+        (not(collision))
+        (not(step 6)))
 
     (<= (goal white 0)
-        (row m n x y)
-        (not(step 6))
+        (collision)
+        (not(step 6)))
 
     (<= (goal black 100)
-        (row m n x y)
-        (not(step 6))
+        (collision)
+        (not(step 6)))
 
-    (<= (goal black 50)
-			(not(row m n x y))
-			(not(step 6))
+	(<= (goal black 50)
+        (not(collision))
+        (not(step 6)))
 
     (<= (goal black 0)
-			(not(row m n x y))
-			(step 6)
+		(not(collision))
+		(step 6))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; terminal
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
     (<= terminal
-        (row m n x y))
+        true(collision))
 
     (<= terminal
         (step 6))
 
-    (<= terminal
+		(<= terminal
         (not open))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Data
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -133,6 +121,14 @@
   (successor 3 4)
   (successor 4 5)
   (successor 5 6)
+  (adjacent 1 2)
+  (adjacent 2 1)
+  (adjacent 2 3)
+  (adjacent 3 2)
+  (adjacent 3 4)
+  (adjacent 4 3)
+  (adjacent 4 5)
+  (adjacent 5 4)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
