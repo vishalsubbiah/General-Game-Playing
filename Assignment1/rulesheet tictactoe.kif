@@ -13,7 +13,7 @@
     (<= (base (cell ?m ?n b)) (index ?m) (index ?n))
     (base (control white))
     (base (control black))
-
+  
     (<= (input ?r (mark ?m ?n)) (role ?r) (index ?m) (index ?n))
     (<= (input ?r noop) (role ?r))
 

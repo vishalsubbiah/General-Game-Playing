@@ -28,6 +28,9 @@ function makecell (row,rownum,colnum,state)
   cell.setAttribute('style','font-family:helvetica;font-size:18pt');
   rownum = (rownum+1).toString();
   colnum = (colnum+1).toString();
-  var mark = compfindx('Z',seq('cell',rownum,colnum,'Z'),state,seq());
-  if (mark && mark != 'b') {cell.innerHTML = mark} else {cell.innerHTML = '&nbsp;'};
+  var xmark = compfindx('X',seq('cell',rownum,colnum,'x'),state,seq());
+  var omark = compfindx('O',seq('cell',rownum,colnum,'o'),state,seq());
+  cell.innerHTML = '&nbsp;';
+  if (xmark) {cell.innerHTML = 'X'};
+  if (omark) {cell.innerHTML = 'O'};
   return cell}

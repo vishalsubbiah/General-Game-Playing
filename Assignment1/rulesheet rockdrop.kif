@@ -10,6 +10,8 @@
 
 	(<= (base (cell ?m ?n x)) (index ?m) (index ?n))
     (<= (base (cell ?m ?n b)) (index ?m) (index ?n))
+    (<= (base (cell ?m ?n o)) (index ?m) (index ?n))
+    (base (collision))
 	(base (step 1))
   	(base (step 2))
   	(base (step 3))
@@ -57,17 +59,16 @@
     (<= (next (cell ?m ?n x))
         (does white (move ?m ?n)))
 
+
     (<= (next (cell ?m ?n o))
         (does black (drop ?m ?n)))
 
-	(<= (next (cell ?m ?n b))
-        (true (cell ?m ?n b))
-		(not(does black (drop ?m ?n)))
-		(not(does white (move ?m ?n))))
+    (<= (next (cell ?m ?n b))
+        (true (cell ?m ?n b)))
 
-	(<= (collision)
-        (does white (move ?m ?n))
-		(does black (drop ?m ?n)))
+    (<= (next (collision))
+        (does black (drop ?m ?n))
+        (does white (move ?m ?n)))
 
 	(<= (next (step ?n)) (true (step ?m)) (successor ?m ?n))
 
@@ -77,40 +78,36 @@
 
     (<= (goal white 100)
         (not(collision))
-        (step 6))
+        (true(step 6)))
 
 	(<= (goal white 50)
-        (not(collision))
+        (not(true(collision)))
         (not(step 6)))
 
     (<= (goal white 0)
-        (collision)
-        (not(step 6)))
+        (true(collision))
+        (not(true(step 6))))
 
     (<= (goal black 100)
-        (collision)
-        (not(step 6)))
+        (true(collision))
+        (not(true(step 6))))
 
 	(<= (goal black 50)
-        (not(collision))
-        (not(step 6)))
+        (not(true(collision)))
+        (not(true(step 6))))
 
     (<= (goal black 0)
-		(not(collision))
-		(step 6))
+        (not(true(collision)))
+		(true(step 6)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; terminal
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
     (<= terminal
-        true(collision))
+        (true(step 6)))
 
-    (<= terminal
-        (step 6))
-
-		(<= terminal
-        (not open))
+  (<= terminal (true(collision)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Data
