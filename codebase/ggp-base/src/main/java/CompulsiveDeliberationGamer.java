@@ -52,7 +52,7 @@ public class CompulsiveDeliberationGamer extends BaseDemBoisGamer {
 	@Override
 	public String getName() {
 		// TODO Auto-generated method stub
-		return "DemBois";
+		return "CompulsiveDemBois";
 	}
 
 }
