@@ -28,7 +28,7 @@ public class MinimaxGamer extends BaseDemBoisGamer {
 	@Override
 	public Move stateMachineSelectMove(long timeout)
 			throws TransitionDefinitionException, MoveDefinitionException, GoalDefinitionException {
-		return getMinimaxMove(getStateMachine(),getRole(), getCurrentState(), timeout);
+		return getMinimaxMove(getRole(), getCurrentState(), timeout);
 	}
 
 	@Override

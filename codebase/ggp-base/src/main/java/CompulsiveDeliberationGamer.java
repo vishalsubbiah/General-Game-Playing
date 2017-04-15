@@ -28,7 +28,7 @@ public class CompulsiveDeliberationGamer extends BaseDemBoisGamer {
 	@Override
 	public Move stateMachineSelectMove(long timeout)
 			throws TransitionDefinitionException, MoveDefinitionException, GoalDefinitionException {
-		return getCompulsiveDeliberationMove(getStateMachine(),getRole(), getCurrentState(), timeout);
+		return getCompulsiveDeliberationMove(getRole(), getCurrentState(), timeout);
 	}
 
 	@Override
