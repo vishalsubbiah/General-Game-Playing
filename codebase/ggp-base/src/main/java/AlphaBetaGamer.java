@@ -28,7 +28,7 @@ public class AlphaBetaGamer extends BaseDemBoisGamer {
 	@Override
 	public Move stateMachineSelectMove(long timeout)
 			throws TransitionDefinitionException, MoveDefinitionException, GoalDefinitionException {
-		return getAlphaBetaMove(getRole(), getCurrentState(), timeout);
+		return getAlphaBetaMove(getStateMachine(),getRole(), getCurrentState(), timeout);
 	}
 
 	@Override

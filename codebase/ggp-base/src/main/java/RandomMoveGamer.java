@@ -1,6 +1,3 @@
-import java.util.List;
-import java.util.Random;
-
 import org.ggp.base.apps.player.Player;
 import org.ggp.base.player.gamer.exception.GamePreviewException;
 import org.ggp.base.util.game.Game;
@@ -36,10 +33,8 @@ public class RandomMoveGamer extends BaseDemBoisGamer {
 		StateMachine machine = getStateMachine();
 		MachineState state= getCurrentState();
 		Role role = getRole();
-		List<Move> moves=machine.getLegalMoves(state, role);
-		int n =moves.size();
-		Random rn= new Random();
-		return moves.get(rn.nextInt(n));
+		Move move=machine.getRandomMove(state, role);
+		return move;
 	}
 
 	@Override
