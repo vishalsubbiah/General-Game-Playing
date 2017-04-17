@@ -28,7 +28,57 @@ public class CompulsiveDeliberationGamer extends BaseDemBoisGamer {
 	@Override
 	public Move stateMachineSelectMove(long timeout)
 			throws TransitionDefinitionException, MoveDefinitionException, GoalDefinitionException {
-		return getCompulsiveDeliberationMove(getRole(), getCurrentState(), timeout);
+		// TODO Auto-generated method stub
+		StateMachine machine = getStateMachine();
+		MachineState state = getCurrentState();
+		Role role = getRole();
+		List<Move> moves = machine.getLegalMoves(state, role);
+		return compulsiveDeliberation();
+	}
+
+	private Move compulsiveDeliberation(){
+		Move result = null;
+
+		try {
+			Map<Move, List<MachineState>> moves_to_states = getStateMachine().getNextStates(getCurrentState(), getRole());
+
+			int maxScore = 0;
+			for(Move m: moves_to_states.keySet()){
+				MachineState s = moves_to_states.get(m).get(0); //assuming this is single player, each move will only return one state
+				if(computeScore(s) == 100) return m;
+				if(computeScore(s) > maxScore) result = m;
+			}
+
+
+		} catch (MoveDefinitionException | TransitionDefinitionException e){
+			System.out.println("Error: Call to machine.getNextStates() threw " + e.getMessage());
+		}
+
+		return result;
+	}
+
+
+	private int computeScore(MachineState currentState) {
+		if(getStateMachine().isTerminal(currentState)){
+			try {
+				return getStateMachine().getGoal(currentState, getRole());
+			} catch (GoalDefinitionException e) { return 0; }
+		}
+
+		int score = 0;
+		try{
+			Map<Move, List<MachineState>> moves_to_states = getStateMachine().getNextStates(currentState, getRole());
+			for(Move m: moves_to_states.keySet()){
+				MachineState s = moves_to_states.get(m).get(0);
+				int currentScore = computeScore(s);
+				if(currentScore > score) score = currentScore;
+			}
+
+		} catch (MoveDefinitionException | TransitionDefinitionException e){
+			System.out.println("Error: Call to machine.getNextStates() threw " + e.getMessage());
+		}
+
+		return score;
 	}
 
 	@Override
