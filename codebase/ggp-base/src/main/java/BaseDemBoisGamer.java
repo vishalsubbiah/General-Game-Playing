@@ -13,14 +13,31 @@ import org.ggp.base.util.statemachine.exceptions.MoveDefinitionException;
 import org.ggp.base.util.statemachine.exceptions.TransitionDefinitionException;
 
 public abstract class BaseDemBoisGamer extends StateMachineGamer{
-	protected Move getCompulsiveDeliberationMove(Role role, MachineState state, long timeout){
-		//TODO: not implemented yet
-		return null;
+	protected Move getCompulsiveDeliberationMove(Role role, MachineState state, long timeout) throws GoalDefinitionException, MoveDefinitionException, TransitionDefinitionException{
+		Move result = null;
+		Map<Move, List<MachineState>> moves_to_states = getStateMachine().getNextStates(state, role);
+
+		int maxScore = 0;
+		for(Move m: moves_to_states.keySet()){
+			MachineState s = moves_to_states.get(m).get(0); //assuming this is single player, each move will only return one state
+			if(getDeliberationMaxScore(role, s) == 100) {return m;}
+			if(getDeliberationMaxScore(role, s) > maxScore) {result = m;}
+		}
+			return result;
 	}
 
-	private int getDeliberationMaxScore(Role role, MachineState state){
-		//TODO: not implemented yet
-		return -1;
+	private int getDeliberationMaxScore(Role role, MachineState state) throws GoalDefinitionException, MoveDefinitionException, TransitionDefinitionException{
+		if(getStateMachine().isTerminal(state)){
+			return getStateMachine().getGoal(state, role);
+		}
+		int score = 0;
+		Map<Move, List<MachineState>> moves_to_states = getStateMachine().getNextStates(state, role);
+		for(Move m: moves_to_states.keySet()){
+			MachineState s = moves_to_states.get(m).get(0);
+			int currentScore = getDeliberationMaxScore(role, s);
+			if(currentScore > score) score = currentScore;
+		}
+		return score;
 	}
 
 	protected Move getMinimaxMove(Role role, MachineState state, long timeout) throws MoveDefinitionException, TransitionDefinitionException, GoalDefinitionException{
@@ -112,15 +129,16 @@ public abstract class BaseDemBoisGamer extends StateMachineGamer{
 	}
 
 	protected Move getAlphaBetaMove(Role role, MachineState state, long timeout) throws MoveDefinitionException, TransitionDefinitionException, GoalDefinitionException{
-		//FIXME: can't beat the games
 		StateMachine machine = getStateMachine();
 		List<Move> actions = machine.getLegalMoves(state, role);
 		Move action = actions.get(0);
 		int score=0;
-		int alpha=-1;
-		int beta=101;
+		int alpha=0;
+		int beta=100;
 		for(int i=0;i<actions.size();i++)
 		{
+			//int alpha=0;
+			//int beta=100;
 			int result= this.getABMinScore(role, actions.get(i), state, alpha, beta);
 			if(result==100){
 				return actions.get(i);
@@ -131,11 +149,9 @@ public abstract class BaseDemBoisGamer extends StateMachineGamer{
 			}
 		}
 		return action;
-		//return null;
 	}
 
 	private int getABMinScore(Role role, Move action, MachineState state, int alpha, int beta) throws MoveDefinitionException, TransitionDefinitionException, GoalDefinitionException{
-		//FIXME: can't beat the games
 		StateMachine machine = getStateMachine();
 		List<Role> players = machine.getRoles();
 		List<Role> opponents = new ArrayList<>();
@@ -151,7 +167,7 @@ public abstract class BaseDemBoisGamer extends StateMachineGamer{
 			List<Move> actions = machine.getLegalMoves(state, opponent);
 			for(int i=0;i<actions.size();i++){
 				List<Move> move=new ArrayList<>();
-				if(role==machine.getRoles().get(0)){
+				if(role.equals(machine.getRoles().get(0))){
 					move.add(action);
 					move.add(actions.get(i));
 				}
@@ -165,15 +181,12 @@ public abstract class BaseDemBoisGamer extends StateMachineGamer{
 				if(beta<=alpha){
 					return alpha;
 				}
-
 			}
 		}
-
 		return beta;
 	}
 
 	private int getABMaxScore(Role role, MachineState state, int alpha, int beta) throws GoalDefinitionException, MoveDefinitionException, TransitionDefinitionException{
-		//FIXME: can't beat the games
 		StateMachine machine = getStateMachine();
 		if(machine.isTerminal(state))
 		{
