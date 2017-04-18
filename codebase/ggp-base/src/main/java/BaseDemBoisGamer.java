@@ -75,7 +75,7 @@ public abstract class BaseDemBoisGamer extends StateMachineGamer{
 		List<Role> players = machine.getRoles();
 		int numMovesets = 1;
 		for(Role player : players){
-			if(player == role){
+			if(player.equals(role)){
 				List<Move> legalMoves = new ArrayList<Move>();
 				legalMoves.add(action);
 				legalMoveMap.put(player, legalMoves);
@@ -91,7 +91,7 @@ public abstract class BaseDemBoisGamer extends StateMachineGamer{
 		}
 		int scopeSize = numMovesets;
 		for(Role player : players){
-			if(player == role){
+			if(player.equals(role)){
 				for(List<Move> moveSet : moveSets){
 					moveSet.add(action);
 				}

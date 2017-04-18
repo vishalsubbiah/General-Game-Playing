@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<item value="0" key="org.eclipse.egit.ui.internal.clone.GitSelectWizardPageWizardSel"/>
+	<item value="/Users/miguelgarcia/Documents/cs227b/General-Game-Playing/.git" key="GitSelectRepositoryPage.lastRepository"/>
+	<list key="EGit.KnownHosts">
+		<item value="git.eclipse.org"/>
+		<item value="github.com"/>
+		<item value="bitbucket.org"/>
+	</list>
+	<list key="RepositorySelectionPage.UsedUris">
+		<item value="file:////Users/miguelgarcia/Documents/cs227b/General-Game-Playing/codebase/ggp-base"/>
+		<item value="https://github.com/vishalsubbiah/General-Game-Playing.gitgit@github.com:vishalsubbiah/General-Game-Playing.git"/>
+		<item value="ssh://git@github.com/vishalsubbiah/General-Game-Playing.git"/>
+		<item value="https://github.com/vishalsubbiah/General-Game-Playing.git"/>
+		<item value="http://github.com/vishalsubbiah/General-Game-Playing.git"/>
+		<item value="ssh://m@github.com/vishalsubbiah/General-Game-Playing.git"/>
+		<item value="git://github.com/vishalsubbiah/General-Game-Playing.git"/>
+	</list>
+	<section name="GitImportWizard">
+		<item value="true" key="GitProjectsImportPage.STORE_NESTED_PROJECTS"/>
+	</section>
+</section>

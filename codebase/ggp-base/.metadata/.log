@@ -1,0 +1,485 @@
+!SESSION 2017-04-17 21:35:49.983 -----------------------------------------------
+eclipse.buildId=4.6.2.M20161124-1400
+java.version=1.8.0_92
+java.vendor=Oracle Corporation
+BootLoader constants: OS=macosx, ARCH=x86_64, WS=cocoa, NL=en_US
+Framework arguments:  -product org.eclipse.epp.package.java.product -product org.eclipse.epp.package.java.product -keyring /Users/miguelgarcia/.eclipse_keyring
+Command-line arguments:  -os macosx -ws cocoa -arch x86_64 -product org.eclipse.epp.package.java.product -data /Users/miguelgarcia/Documents/cs227b/General-Game-Playing/codebase/ggp-base -product org.eclipse.epp.package.java.product -keyring /Users/miguelgarcia/.eclipse_keyring
+
+!ENTRY org.eclipse.core.net 1 0 2017-04-17 21:35:59.773
+!MESSAGE System property http.nonProxyHosts has been set to local|*.local|169.254/16|*.169.254/16 by an external source. This value will be overwritten using the values from the preferences
+!SESSION 2017-04-17 21:36:42.740 -----------------------------------------------
+eclipse.buildId=4.6.2.M20161124-1400
+java.version=1.8.0_92
+java.vendor=Oracle Corporation
+BootLoader constants: OS=macosx, ARCH=x86_64, WS=cocoa, NL=en_US
+Framework arguments:  -product org.eclipse.epp.package.java.product -product org.eclipse.epp.package.java.product -product org.eclipse.epp.package.java.product -keyring /Users/miguelgarcia/.eclipse_keyring
+Command-line arguments:  -os macosx -ws cocoa -arch x86_64 -product org.eclipse.epp.package.java.product -product org.eclipse.epp.package.java.product -data /Users/miguelgarcia/Documents/cs227b/General-Game-Playing/codebase/ggp-base -product org.eclipse.epp.package.java.product -keyring /Users/miguelgarcia/.eclipse_keyring
+
+!ENTRY org.eclipse.core.net 1 0 2017-04-17 21:36:49.261
+!MESSAGE System property http.nonProxyHosts has been set to local|*.local|169.254/16|*.169.254/16 by an external source. This value will be overwritten using the values from the preferences
+!SESSION 2017-04-17 22:28:51.218 -----------------------------------------------
+eclipse.buildId=4.6.2.M20161124-1400
+java.version=1.8.0_92
+java.vendor=Oracle Corporation
+BootLoader constants: OS=macosx, ARCH=x86_64, WS=cocoa, NL=en_US
+Framework arguments:  -product org.eclipse.epp.package.java.product -product org.eclipse.epp.package.java.product -product org.eclipse.epp.package.java.product -product org.eclipse.epp.package.java.product -keyring /Users/miguelgarcia/.eclipse_keyring
+Command-line arguments:  -os macosx -ws cocoa -arch x86_64 -product org.eclipse.epp.package.java.product -product org.eclipse.epp.package.java.product -product org.eclipse.epp.package.java.product -data /Users/miguelgarcia/Documents/cs227b/General-Game-Playing/codebase/ggp-base -product org.eclipse.epp.package.java.product -keyring /Users/miguelgarcia/.eclipse_keyring
+
+!ENTRY org.eclipse.core.net 1 0 2017-04-17 22:28:59.136
+!MESSAGE System property http.nonProxyHosts has been set to local|*.local|169.254/16|*.169.254/16 by an external source. This value will be overwritten using the values from the preferences
+
+!ENTRY org.eclipse.egit.ui 4 0 2017-04-17 22:30:16.802
+!MESSAGE Invalid project description.
+!STACK 1
+org.eclipse.core.internal.resources.ResourceException: Invalid project description.
+	at org.eclipse.core.internal.resources.Project.checkDescription(Project.java:169)
+	at org.eclipse.core.internal.resources.Project.assertCreateRequirements(Project.java:53)
+	at org.eclipse.core.internal.resources.Project.create(Project.java:263)
+	at org.eclipse.core.internal.resources.Project.create(Project.java:247)
+	at org.eclipse.egit.ui.internal.clone.ProjectUtils.createExistingProject(ProjectUtils.java:179)
+	at org.eclipse.egit.ui.internal.clone.ProjectUtils.access$0(ProjectUtils.java:142)
+	at org.eclipse.egit.ui.internal.clone.ProjectUtils$1.run(ProjectUtils.java:97)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2240)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2262)
+	at org.eclipse.egit.ui.internal.clone.ProjectUtils.createProjects(ProjectUtils.java:134)
+	at org.eclipse.egit.ui.internal.clone.ProjectUtils.createProjects(ProjectUtils.java:60)
+	at org.eclipse.egit.ui.internal.clone.GitImportWizard.importProjects(GitImportWizard.java:253)
+	at org.eclipse.egit.ui.internal.clone.GitImportWizard.access$2(GitImportWizard.java:235)
+	at org.eclipse.egit.ui.internal.clone.GitImportWizard$4.run(GitImportWizard.java:205)
+	at org.eclipse.jface.operation.ModalContext$ModalContextThread.run(ModalContext.java:119)
+Contains: OK
+Contains: /Users/miguelgarcia/Documents/cs227b/General-Game-Playing/codebase/ggp-base overlaps the workspace location: /Users/miguelgarcia/Documents/cs227b/General-Game-Playing/codebase/ggp-base
+!SUBENTRY 1 org.eclipse.core.resources 4 77 2017-04-17 22:30:16.805
+!MESSAGE Invalid project description.
+!SUBENTRY 2 unknown 0 0 2017-04-17 22:30:16.805
+!MESSAGE OK
+!SUBENTRY 2 org.eclipse.core.resources 4 77 2017-04-17 22:30:16.805
+!MESSAGE /Users/miguelgarcia/Documents/cs227b/General-Game-Playing/codebase/ggp-base overlaps the workspace location: /Users/miguelgarcia/Documents/cs227b/General-Game-Playing/codebase/ggp-base
+
+!ENTRY org.eclipse.egit.ui 4 0 2017-04-17 22:30:31.062
+!MESSAGE Invalid project description.
+!STACK 1
+org.eclipse.core.internal.resources.ResourceException: Invalid project description.
+	at org.eclipse.core.internal.resources.Project.checkDescription(Project.java:169)
+	at org.eclipse.core.internal.resources.Project.assertCreateRequirements(Project.java:53)
+	at org.eclipse.core.internal.resources.Project.create(Project.java:263)
+	at org.eclipse.core.internal.resources.Project.create(Project.java:247)
+	at org.eclipse.egit.ui.internal.clone.ProjectUtils.createExistingProject(ProjectUtils.java:179)
+	at org.eclipse.egit.ui.internal.clone.ProjectUtils.access$0(ProjectUtils.java:142)
+	at org.eclipse.egit.ui.internal.clone.ProjectUtils$1.run(ProjectUtils.java:97)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2240)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2262)
+	at org.eclipse.egit.ui.internal.clone.ProjectUtils.createProjects(ProjectUtils.java:134)
+	at org.eclipse.egit.ui.internal.clone.ProjectUtils.createProjects(ProjectUtils.java:60)
+	at org.eclipse.egit.ui.internal.clone.GitImportWizard.importProjects(GitImportWizard.java:253)
+	at org.eclipse.egit.ui.internal.clone.GitImportWizard.access$2(GitImportWizard.java:235)
+	at org.eclipse.egit.ui.internal.clone.GitImportWizard$4.run(GitImportWizard.java:205)
+	at org.eclipse.jface.operation.ModalContext$ModalContextThread.run(ModalContext.java:119)
+Contains: OK
+Contains: /Users/miguelgarcia/Documents/cs227b/General-Game-Playing/codebase/ggp-base overlaps the workspace location: /Users/miguelgarcia/Documents/cs227b/General-Game-Playing/codebase/ggp-base
+!SUBENTRY 1 org.eclipse.core.resources 4 77 2017-04-17 22:30:31.063
+!MESSAGE Invalid project description.
+!SUBENTRY 2 unknown 0 0 2017-04-17 22:30:31.063
+!MESSAGE OK
+!SUBENTRY 2 org.eclipse.core.resources 4 77 2017-04-17 22:30:31.063
+!MESSAGE /Users/miguelgarcia/Documents/cs227b/General-Game-Playing/codebase/ggp-base overlaps the workspace location: /Users/miguelgarcia/Documents/cs227b/General-Game-Playing/codebase/ggp-base
+
+!ENTRY org.eclipse.egit.ui 4 0 2017-04-17 22:30:35.212
+!MESSAGE Invalid project description.
+!STACK 1
+org.eclipse.core.internal.resources.ResourceException: Invalid project description.
+	at org.eclipse.core.internal.resources.Project.checkDescription(Project.java:169)
+	at org.eclipse.core.internal.resources.Project.assertCreateRequirements(Project.java:53)
+	at org.eclipse.core.internal.resources.Project.create(Project.java:263)
+	at org.eclipse.core.internal.resources.Project.create(Project.java:247)
+	at org.eclipse.egit.ui.internal.clone.ProjectUtils.createExistingProject(ProjectUtils.java:179)
+	at org.eclipse.egit.ui.internal.clone.ProjectUtils.access$0(ProjectUtils.java:142)
+	at org.eclipse.egit.ui.internal.clone.ProjectUtils$1.run(ProjectUtils.java:97)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2240)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2262)
+	at org.eclipse.egit.ui.internal.clone.ProjectUtils.createProjects(ProjectUtils.java:134)
+	at org.eclipse.egit.ui.internal.clone.ProjectUtils.createProjects(ProjectUtils.java:60)
+	at org.eclipse.egit.ui.internal.clone.GitImportWizard.importProjects(GitImportWizard.java:253)
+	at org.eclipse.egit.ui.internal.clone.GitImportWizard.access$2(GitImportWizard.java:235)
+	at org.eclipse.egit.ui.internal.clone.GitImportWizard$4.run(GitImportWizard.java:205)
+	at org.eclipse.jface.operation.ModalContext$ModalContextThread.run(ModalContext.java:119)
+Contains: OK
+Contains: /Users/miguelgarcia/Documents/cs227b/General-Game-Playing/codebase/ggp-base overlaps the workspace location: /Users/miguelgarcia/Documents/cs227b/General-Game-Playing/codebase/ggp-base
+!SUBENTRY 1 org.eclipse.core.resources 4 77 2017-04-17 22:30:35.212
+!MESSAGE Invalid project description.
+!SUBENTRY 2 unknown 0 0 2017-04-17 22:30:35.212
+!MESSAGE OK
+!SUBENTRY 2 org.eclipse.core.resources 4 77 2017-04-17 22:30:35.212
+!MESSAGE /Users/miguelgarcia/Documents/cs227b/General-Game-Playing/codebase/ggp-base overlaps the workspace location: /Users/miguelgarcia/Documents/cs227b/General-Game-Playing/codebase/ggp-base
+
+!ENTRY org.eclipse.egit.ui 4 0 2017-04-17 22:30:45.054
+!MESSAGE Invalid project description.
+!STACK 1
+org.eclipse.core.internal.resources.ResourceException: Invalid project description.
+	at org.eclipse.core.internal.resources.Project.checkDescription(Project.java:169)
+	at org.eclipse.core.internal.resources.Project.assertCreateRequirements(Project.java:53)
+	at org.eclipse.core.internal.resources.Project.create(Project.java:263)
+	at org.eclipse.core.internal.resources.Project.create(Project.java:247)
+	at org.eclipse.egit.ui.internal.clone.ProjectUtils.createExistingProject(ProjectUtils.java:179)
+	at org.eclipse.egit.ui.internal.clone.ProjectUtils.access$0(ProjectUtils.java:142)
+	at org.eclipse.egit.ui.internal.clone.ProjectUtils$1.run(ProjectUtils.java:97)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2240)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2262)
+	at org.eclipse.egit.ui.internal.clone.ProjectUtils.createProjects(ProjectUtils.java:134)
+	at org.eclipse.egit.ui.internal.clone.ProjectUtils.createProjects(ProjectUtils.java:60)
+	at org.eclipse.egit.ui.internal.clone.GitImportWizard.importProjects(GitImportWizard.java:253)
+	at org.eclipse.egit.ui.internal.clone.GitImportWizard.access$2(GitImportWizard.java:235)
+	at org.eclipse.egit.ui.internal.clone.GitImportWizard$4.run(GitImportWizard.java:205)
+	at org.eclipse.jface.operation.ModalContext$ModalContextThread.run(ModalContext.java:119)
+Contains: OK
+Contains: /Users/miguelgarcia/Documents/cs227b/General-Game-Playing/codebase/ggp-base overlaps the workspace location: /Users/miguelgarcia/Documents/cs227b/General-Game-Playing/codebase/ggp-base
+!SUBENTRY 1 org.eclipse.core.resources 4 77 2017-04-17 22:30:45.055
+!MESSAGE Invalid project description.
+!SUBENTRY 2 unknown 0 0 2017-04-17 22:30:45.055
+!MESSAGE OK
+!SUBENTRY 2 org.eclipse.core.resources 4 77 2017-04-17 22:30:45.055
+!MESSAGE /Users/miguelgarcia/Documents/cs227b/General-Game-Playing/codebase/ggp-base overlaps the workspace location: /Users/miguelgarcia/Documents/cs227b/General-Game-Playing/codebase/ggp-base
+
+!ENTRY org.eclipse.egit.ui 4 0 2017-04-17 22:31:30.404
+!MESSAGE https://github.com/vishalsubbiah/General-Game-Playing.git: not authorized
+!STACK 0
+org.eclipse.jgit.api.errors.TransportException: https://github.com/vishalsubbiah/General-Game-Playing.git: not authorized
+	at org.eclipse.jgit.api.LsRemoteCommand.execute(LsRemoteCommand.java:221)
+	at org.eclipse.jgit.api.LsRemoteCommand.call(LsRemoteCommand.java:159)
+	at org.eclipse.egit.core.op.ListRemoteOperation.run(ListRemoteOperation.java:100)
+	at org.eclipse.egit.ui.internal.clone.SourceBranchPage$8.run(SourceBranchPage.java:341)
+	at org.eclipse.jface.operation.ModalContext$ModalContextThread.run(ModalContext.java:119)
+Caused by: org.eclipse.jgit.errors.TransportException: https://github.com/vishalsubbiah/General-Game-Playing.git: not authorized
+	at org.eclipse.jgit.transport.TransportHttp.connect(TransportHttp.java:491)
+	at org.eclipse.jgit.transport.TransportHttp.openFetch(TransportHttp.java:288)
+	at org.eclipse.jgit.api.LsRemoteCommand.execute(LsRemoteCommand.java:198)
+	... 4 more
+
+!ENTRY org.eclipse.egit.ui 4 0 2017-04-17 22:32:04.744
+!MESSAGE https://github.com/vishalsubbiah/General-Game-Playing.git: not authorized
+!STACK 0
+org.eclipse.jgit.api.errors.TransportException: https://github.com/vishalsubbiah/General-Game-Playing.git: not authorized
+	at org.eclipse.jgit.api.LsRemoteCommand.execute(LsRemoteCommand.java:221)
+	at org.eclipse.jgit.api.LsRemoteCommand.call(LsRemoteCommand.java:159)
+	at org.eclipse.egit.core.op.ListRemoteOperation.run(ListRemoteOperation.java:100)
+	at org.eclipse.egit.ui.internal.clone.SourceBranchPage$8.run(SourceBranchPage.java:341)
+	at org.eclipse.jface.operation.ModalContext$ModalContextThread.run(ModalContext.java:119)
+Caused by: org.eclipse.jgit.errors.TransportException: https://github.com/vishalsubbiah/General-Game-Playing.git: not authorized
+	at org.eclipse.jgit.transport.TransportHttp.connect(TransportHttp.java:491)
+	at org.eclipse.jgit.transport.TransportHttp.openFetch(TransportHttp.java:288)
+	at org.eclipse.jgit.api.LsRemoteCommand.execute(LsRemoteCommand.java:198)
+	... 4 more
+
+!ENTRY org.eclipse.egit.ui 4 0 2017-04-17 22:32:57.673
+!MESSAGE git://github.com/vishalsubbiah/General-Game-Playing.git: 
+  Repository not found.
+!STACK 0
+org.eclipse.jgit.api.errors.TransportException: git://github.com/vishalsubbiah/General-Game-Playing.git: 
+  Repository not found.
+	at org.eclipse.jgit.api.LsRemoteCommand.execute(LsRemoteCommand.java:221)
+	at org.eclipse.jgit.api.LsRemoteCommand.call(LsRemoteCommand.java:159)
+	at org.eclipse.egit.core.op.ListRemoteOperation.run(ListRemoteOperation.java:100)
+	at org.eclipse.egit.ui.internal.clone.SourceBranchPage$8.run(SourceBranchPage.java:341)
+	at org.eclipse.jface.operation.ModalContext$ModalContextThread.run(ModalContext.java:119)
+Caused by: org.eclipse.jgit.errors.RemoteRepositoryException: git://github.com/vishalsubbiah/General-Game-Playing.git: 
+  Repository not found.
+	at org.eclipse.jgit.transport.BasePackConnection.readAdvertisedRefsImpl(BasePackConnection.java:211)
+	at org.eclipse.jgit.transport.BasePackConnection.readAdvertisedRefs(BasePackConnection.java:180)
+	at org.eclipse.jgit.transport.TransportGitAnon$TcpFetchConnection.<init>(TransportGitAnon.java:194)
+	at org.eclipse.jgit.transport.TransportGitAnon.openFetch(TransportGitAnon.java:120)
+	at org.eclipse.jgit.api.LsRemoteCommand.execute(LsRemoteCommand.java:198)
+	... 4 more
+
+!ENTRY org.eclipse.egit.ui 4 0 2017-04-17 22:33:16.629
+!MESSAGE ssh://m@github.com/vishalsubbiah/General-Game-Playing.git: Auth fail
+!STACK 0
+org.eclipse.jgit.api.errors.TransportException: ssh://m@github.com/vishalsubbiah/General-Game-Playing.git: Auth fail
+	at org.eclipse.jgit.api.LsRemoteCommand.execute(LsRemoteCommand.java:221)
+	at org.eclipse.jgit.api.LsRemoteCommand.call(LsRemoteCommand.java:159)
+	at org.eclipse.egit.core.op.ListRemoteOperation.run(ListRemoteOperation.java:100)
+	at org.eclipse.egit.ui.internal.clone.SourceBranchPage$8.run(SourceBranchPage.java:341)
+	at org.eclipse.jface.operation.ModalContext$ModalContextThread.run(ModalContext.java:119)
+Caused by: org.eclipse.jgit.errors.TransportException: ssh://m@github.com/vishalsubbiah/General-Game-Playing.git: Auth fail
+	at org.eclipse.jgit.transport.JschConfigSessionFactory.getSession(JschConfigSessionFactory.java:159)
+	at org.eclipse.jgit.transport.SshTransport.getSession(SshTransport.java:137)
+	at org.eclipse.jgit.transport.TransportGitSsh$SshFetchConnection.<init>(TransportGitSsh.java:264)
+	at org.eclipse.jgit.transport.TransportGitSsh.openFetch(TransportGitSsh.java:162)
+	at org.eclipse.jgit.api.LsRemoteCommand.execute(LsRemoteCommand.java:198)
+	... 4 more
+Caused by: com.jcraft.jsch.JSchException: Auth fail
+	at com.jcraft.jsch.Session.connect(Session.java:512)
+	at org.eclipse.jgit.transport.JschConfigSessionFactory.getSession(JschConfigSessionFactory.java:116)
+	... 8 more
+
+!ENTRY org.eclipse.egit.ui 4 0 2017-04-17 22:33:27.810
+!MESSAGE http://github.com/vishalsubbiah/General-Game-Playing.git: 301 Moved Permanently
+!STACK 0
+org.eclipse.jgit.api.errors.TransportException: http://github.com/vishalsubbiah/General-Game-Playing.git: 301 Moved Permanently
+	at org.eclipse.jgit.api.LsRemoteCommand.execute(LsRemoteCommand.java:221)
+	at org.eclipse.jgit.api.LsRemoteCommand.call(LsRemoteCommand.java:159)
+	at org.eclipse.egit.core.op.ListRemoteOperation.run(ListRemoteOperation.java:100)
+	at org.eclipse.egit.ui.internal.clone.SourceBranchPage$8.run(SourceBranchPage.java:341)
+	at org.eclipse.jface.operation.ModalContext$ModalContextThread.run(ModalContext.java:119)
+Caused by: org.eclipse.jgit.errors.TransportException: http://github.com/vishalsubbiah/General-Game-Playing.git: 301 Moved Permanently
+	at org.eclipse.jgit.transport.TransportHttp.connect(TransportHttp.java:502)
+	at org.eclipse.jgit.transport.TransportHttp.openFetch(TransportHttp.java:288)
+	at org.eclipse.jgit.api.LsRemoteCommand.execute(LsRemoteCommand.java:198)
+	... 4 more
+
+!ENTRY org.eclipse.egit.ui 4 0 2017-04-17 22:33:48.506
+!MESSAGE https://github.com/vishalsubbiah/General-Game-Playing.git: not authorized
+!STACK 0
+org.eclipse.jgit.api.errors.TransportException: https://github.com/vishalsubbiah/General-Game-Playing.git: not authorized
+	at org.eclipse.jgit.api.LsRemoteCommand.execute(LsRemoteCommand.java:221)
+	at org.eclipse.jgit.api.LsRemoteCommand.call(LsRemoteCommand.java:159)
+	at org.eclipse.egit.core.op.ListRemoteOperation.run(ListRemoteOperation.java:100)
+	at org.eclipse.egit.ui.internal.clone.SourceBranchPage$8.run(SourceBranchPage.java:341)
+	at org.eclipse.jface.operation.ModalContext$ModalContextThread.run(ModalContext.java:119)
+Caused by: org.eclipse.jgit.errors.TransportException: https://github.com/vishalsubbiah/General-Game-Playing.git: not authorized
+	at org.eclipse.jgit.transport.TransportHttp.connect(TransportHttp.java:491)
+	at org.eclipse.jgit.transport.TransportHttp.openFetch(TransportHttp.java:288)
+	at org.eclipse.jgit.api.LsRemoteCommand.execute(LsRemoteCommand.java:198)
+	... 4 more
+
+!ENTRY org.eclipse.egit.ui 4 0 2017-04-17 22:35:10.575
+!MESSAGE ssh://git@github.com/vishalsubbiah/General-Game-Playing.git: Auth fail
+!STACK 0
+org.eclipse.jgit.api.errors.TransportException: ssh://git@github.com/vishalsubbiah/General-Game-Playing.git: Auth fail
+	at org.eclipse.jgit.api.LsRemoteCommand.execute(LsRemoteCommand.java:221)
+	at org.eclipse.jgit.api.LsRemoteCommand.call(LsRemoteCommand.java:159)
+	at org.eclipse.egit.core.op.ListRemoteOperation.run(ListRemoteOperation.java:100)
+	at org.eclipse.egit.ui.internal.clone.SourceBranchPage$8.run(SourceBranchPage.java:341)
+	at org.eclipse.jface.operation.ModalContext$ModalContextThread.run(ModalContext.java:119)
+Caused by: org.eclipse.jgit.errors.TransportException: ssh://git@github.com/vishalsubbiah/General-Game-Playing.git: Auth fail
+	at org.eclipse.jgit.transport.JschConfigSessionFactory.getSession(JschConfigSessionFactory.java:159)
+	at org.eclipse.jgit.transport.SshTransport.getSession(SshTransport.java:137)
+	at org.eclipse.jgit.transport.TransportGitSsh$SshFetchConnection.<init>(TransportGitSsh.java:264)
+	at org.eclipse.jgit.transport.TransportGitSsh.openFetch(TransportGitSsh.java:162)
+	at org.eclipse.jgit.api.LsRemoteCommand.execute(LsRemoteCommand.java:198)
+	... 4 more
+Caused by: com.jcraft.jsch.JSchException: Auth fail
+	at com.jcraft.jsch.Session.connect(Session.java:512)
+	at org.eclipse.jgit.transport.JschConfigSessionFactory.getSession(JschConfigSessionFactory.java:116)
+	... 8 more
+
+!ENTRY org.eclipse.egit.ui 4 0 2017-04-17 22:37:27.033
+!MESSAGE Invalid project description.
+!STACK 1
+org.eclipse.core.internal.resources.ResourceException: Invalid project description.
+	at org.eclipse.core.internal.resources.Project.checkDescription(Project.java:169)
+	at org.eclipse.core.internal.resources.Project.assertCreateRequirements(Project.java:53)
+	at org.eclipse.core.internal.resources.Project.create(Project.java:263)
+	at org.eclipse.core.internal.resources.Project.create(Project.java:247)
+	at org.eclipse.egit.ui.internal.clone.ProjectUtils.createExistingProject(ProjectUtils.java:179)
+	at org.eclipse.egit.ui.internal.clone.ProjectUtils.access$0(ProjectUtils.java:142)
+	at org.eclipse.egit.ui.internal.clone.ProjectUtils$1.run(ProjectUtils.java:97)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2240)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2262)
+	at org.eclipse.egit.ui.internal.clone.ProjectUtils.createProjects(ProjectUtils.java:134)
+	at org.eclipse.egit.ui.internal.clone.ProjectUtils.createProjects(ProjectUtils.java:60)
+	at org.eclipse.egit.ui.internal.clone.GitImportWizard.importProjects(GitImportWizard.java:253)
+	at org.eclipse.egit.ui.internal.clone.GitImportWizard.access$2(GitImportWizard.java:235)
+	at org.eclipse.egit.ui.internal.clone.GitImportWizard$4.run(GitImportWizard.java:205)
+	at org.eclipse.jface.operation.ModalContext$ModalContextThread.run(ModalContext.java:119)
+Contains: OK
+Contains: /Users/miguelgarcia/Documents/cs227b/General-Game-Playing/codebase/ggp-base overlaps the workspace location: /Users/miguelgarcia/Documents/cs227b/General-Game-Playing/codebase/ggp-base
+!SUBENTRY 1 org.eclipse.core.resources 4 77 2017-04-17 22:37:27.034
+!MESSAGE Invalid project description.
+!SUBENTRY 2 unknown 0 0 2017-04-17 22:37:27.034
+!MESSAGE OK
+!SUBENTRY 2 org.eclipse.core.resources 4 77 2017-04-17 22:37:27.034
+!MESSAGE /Users/miguelgarcia/Documents/cs227b/General-Game-Playing/codebase/ggp-base overlaps the workspace location: /Users/miguelgarcia/Documents/cs227b/General-Game-Playing/codebase/ggp-base
+!SESSION 2017-04-17 22:41:27.238 -----------------------------------------------
+eclipse.buildId=4.6.2.M20161124-1400
+java.version=1.8.0_92
+java.vendor=Oracle Corporation
+BootLoader constants: OS=macosx, ARCH=x86_64, WS=cocoa, NL=en_US
+Framework arguments:  -product org.eclipse.epp.package.java.product -product org.eclipse.epp.package.java.product -product org.eclipse.epp.package.java.product -product org.eclipse.epp.package.java.product -product org.eclipse.epp.package.java.product -keyring /Users/miguelgarcia/.eclipse_keyring
+Command-line arguments:  -os macosx -ws cocoa -arch x86_64 -product org.eclipse.epp.package.java.product -product org.eclipse.epp.package.java.product -product org.eclipse.epp.package.java.product -product org.eclipse.epp.package.java.product -data /Users/miguelgarcia/Documents/cs227b/General-Game-Playing/codebase/ggp-base -product org.eclipse.epp.package.java.product -keyring /Users/miguelgarcia/.eclipse_keyring
+
+!ENTRY org.eclipse.core.net 1 0 2017-04-17 22:41:35.216
+!MESSAGE System property http.nonProxyHosts has been set to local|*.local|169.254/16|*.169.254/16 by an external source. This value will be overwritten using the values from the preferences
+
+!ENTRY org.eclipse.egit.ui 4 0 2017-04-17 22:43:32.240
+!MESSAGE https://github.com/vishalsubbiah/General-Game-Playing.gitgit@github.com:vishalsubbiah/General-Game-Playing.git: https://github.com/vishalsubbiah/General-Game-Playing.gitgit@github.com:vishalsubbiah/General-Game-Playing.git/info/refs?service=git-upload-pack not found
+!STACK 0
+org.eclipse.jgit.api.errors.TransportException: https://github.com/vishalsubbiah/General-Game-Playing.gitgit@github.com:vishalsubbiah/General-Game-Playing.git: https://github.com/vishalsubbiah/General-Game-Playing.gitgit@github.com:vishalsubbiah/General-Game-Playing.git/info/refs?service=git-upload-pack not found
+	at org.eclipse.jgit.api.LsRemoteCommand.execute(LsRemoteCommand.java:221)
+	at org.eclipse.jgit.api.LsRemoteCommand.call(LsRemoteCommand.java:159)
+	at org.eclipse.egit.core.op.ListRemoteOperation.run(ListRemoteOperation.java:100)
+	at org.eclipse.egit.ui.internal.clone.SourceBranchPage$8.run(SourceBranchPage.java:341)
+	at org.eclipse.jface.operation.ModalContext$ModalContextThread.run(ModalContext.java:119)
+Caused by: org.eclipse.jgit.errors.NoRemoteRepositoryException: https://github.com/vishalsubbiah/General-Game-Playing.gitgit@github.com:vishalsubbiah/General-Game-Playing.git: https://github.com/vishalsubbiah/General-Game-Playing.gitgit@github.com:vishalsubbiah/General-Game-Playing.git/info/refs?service=git-upload-pack not found
+	at org.eclipse.jgit.transport.TransportHttp.connect(TransportHttp.java:475)
+	at org.eclipse.jgit.transport.TransportHttp.openFetch(TransportHttp.java:288)
+	at org.eclipse.jgit.api.LsRemoteCommand.execute(LsRemoteCommand.java:198)
+	... 4 more
+
+!ENTRY org.eclipse.egit.ui 4 0 2017-04-17 22:43:54.725
+!MESSAGE file:////Users/miguelgarcia/Documents/cs227b/General-Game-Playing/codebase/ggp-base: not found.
+!STACK 0
+org.eclipse.jgit.api.errors.TransportException: file:////Users/miguelgarcia/Documents/cs227b/General-Game-Playing/codebase/ggp-base: not found.
+	at org.eclipse.jgit.api.LsRemoteCommand.execute(LsRemoteCommand.java:221)
+	at org.eclipse.jgit.api.LsRemoteCommand.call(LsRemoteCommand.java:159)
+	at org.eclipse.egit.core.op.ListRemoteOperation.run(ListRemoteOperation.java:100)
+	at org.eclipse.egit.ui.internal.clone.SourceBranchPage$8.run(SourceBranchPage.java:341)
+	at org.eclipse.jface.operation.ModalContext$ModalContextThread.run(ModalContext.java:119)
+Caused by: org.eclipse.jgit.errors.NoRemoteRepositoryException: file:////Users/miguelgarcia/Documents/cs227b/General-Game-Playing/codebase/ggp-base: not found.
+	at org.eclipse.jgit.transport.TransportLocal$1.open(TransportLocal.java:131)
+	at org.eclipse.jgit.transport.TransportBundleFile$1.open(TransportBundleFile.java:106)
+	at org.eclipse.jgit.transport.Transport.open(Transport.java:565)
+	at org.eclipse.jgit.transport.Transport.open(Transport.java:322)
+	at org.eclipse.jgit.transport.Transport.open(Transport.java:292)
+	at org.eclipse.jgit.api.LsRemoteCommand.execute(LsRemoteCommand.java:186)
+	... 4 more
+
+!ENTRY org.eclipse.egit.ui 4 0 2017-04-17 22:45:32.296
+!MESSAGE Invalid project description.
+!STACK 1
+org.eclipse.core.internal.resources.ResourceException: Invalid project description.
+	at org.eclipse.core.internal.resources.Project.checkDescription(Project.java:169)
+	at org.eclipse.core.internal.resources.Project.assertCreateRequirements(Project.java:53)
+	at org.eclipse.core.internal.resources.Project.create(Project.java:263)
+	at org.eclipse.core.internal.resources.Project.create(Project.java:247)
+	at org.eclipse.egit.ui.internal.clone.ProjectUtils.createExistingProject(ProjectUtils.java:179)
+	at org.eclipse.egit.ui.internal.clone.ProjectUtils.access$0(ProjectUtils.java:142)
+	at org.eclipse.egit.ui.internal.clone.ProjectUtils$1.run(ProjectUtils.java:97)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2240)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2262)
+	at org.eclipse.egit.ui.internal.clone.ProjectUtils.createProjects(ProjectUtils.java:134)
+	at org.eclipse.egit.ui.internal.clone.ProjectUtils.createProjects(ProjectUtils.java:60)
+	at org.eclipse.egit.ui.internal.clone.GitImportWizard.importProjects(GitImportWizard.java:253)
+	at org.eclipse.egit.ui.internal.clone.GitImportWizard.access$2(GitImportWizard.java:235)
+	at org.eclipse.egit.ui.internal.clone.GitImportWizard$4.run(GitImportWizard.java:205)
+	at org.eclipse.jface.operation.ModalContext$ModalContextThread.run(ModalContext.java:119)
+Contains: OK
+Contains: /Users/miguelgarcia/Documents/cs227b/General-Game-Playing/codebase/ggp-base overlaps the workspace location: /Users/miguelgarcia/Documents/cs227b/General-Game-Playing/codebase/ggp-base
+!SUBENTRY 1 org.eclipse.core.resources 4 77 2017-04-17 22:45:32.297
+!MESSAGE Invalid project description.
+!SUBENTRY 2 unknown 0 0 2017-04-17 22:45:32.297
+!MESSAGE OK
+!SUBENTRY 2 org.eclipse.core.resources 4 77 2017-04-17 22:45:32.297
+!MESSAGE /Users/miguelgarcia/Documents/cs227b/General-Game-Playing/codebase/ggp-base overlaps the workspace location: /Users/miguelgarcia/Documents/cs227b/General-Game-Playing/codebase/ggp-base
+
+!ENTRY org.eclipse.egit.ui 4 0 2017-04-17 22:45:43.659
+!MESSAGE Invalid project description.
+!STACK 1
+org.eclipse.core.internal.resources.ResourceException: Invalid project description.
+	at org.eclipse.core.internal.resources.Project.checkDescription(Project.java:169)
+	at org.eclipse.core.internal.resources.Project.assertCreateRequirements(Project.java:53)
+	at org.eclipse.core.internal.resources.Project.create(Project.java:263)
+	at org.eclipse.core.internal.resources.Project.create(Project.java:247)
+	at org.eclipse.egit.ui.internal.clone.ProjectUtils.createExistingProject(ProjectUtils.java:179)
+	at org.eclipse.egit.ui.internal.clone.ProjectUtils.access$0(ProjectUtils.java:142)
+	at org.eclipse.egit.ui.internal.clone.ProjectUtils$1.run(ProjectUtils.java:97)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2240)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2262)
+	at org.eclipse.egit.ui.internal.clone.ProjectUtils.createProjects(ProjectUtils.java:134)
+	at org.eclipse.egit.ui.internal.clone.ProjectUtils.createProjects(ProjectUtils.java:60)
+	at org.eclipse.egit.ui.internal.clone.GitImportWizard.importProjects(GitImportWizard.java:253)
+	at org.eclipse.egit.ui.internal.clone.GitImportWizard.access$2(GitImportWizard.java:235)
+	at org.eclipse.egit.ui.internal.clone.GitImportWizard$4.run(GitImportWizard.java:205)
+	at org.eclipse.jface.operation.ModalContext$ModalContextThread.run(ModalContext.java:119)
+Contains: OK
+Contains: /Users/miguelgarcia/Documents/cs227b/General-Game-Playing/codebase/ggp-base overlaps the workspace location: /Users/miguelgarcia/Documents/cs227b/General-Game-Playing/codebase/ggp-base
+!SUBENTRY 1 org.eclipse.core.resources 4 77 2017-04-17 22:45:43.659
+!MESSAGE Invalid project description.
+!SUBENTRY 2 unknown 0 0 2017-04-17 22:45:43.659
+!MESSAGE OK
+!SUBENTRY 2 org.eclipse.core.resources 4 77 2017-04-17 22:45:43.659
+!MESSAGE /Users/miguelgarcia/Documents/cs227b/General-Game-Playing/codebase/ggp-base overlaps the workspace location: /Users/miguelgarcia/Documents/cs227b/General-Game-Playing/codebase/ggp-base
+
+!ENTRY org.eclipse.egit.ui 4 0 2017-04-17 22:48:40.613
+!MESSAGE Invalid project description.
+!STACK 1
+org.eclipse.core.internal.resources.ResourceException: Invalid project description.
+	at org.eclipse.core.internal.resources.Project.checkDescription(Project.java:169)
+	at org.eclipse.core.internal.resources.Project.assertCreateRequirements(Project.java:53)
+	at org.eclipse.core.internal.resources.Project.create(Project.java:263)
+	at org.eclipse.core.internal.resources.Project.create(Project.java:247)
+	at org.eclipse.egit.ui.internal.clone.ProjectUtils.createExistingProject(ProjectUtils.java:179)
+	at org.eclipse.egit.ui.internal.clone.ProjectUtils.access$0(ProjectUtils.java:142)
+	at org.eclipse.egit.ui.internal.clone.ProjectUtils$1.run(ProjectUtils.java:97)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2240)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2262)
+	at org.eclipse.egit.ui.internal.clone.ProjectUtils.createProjects(ProjectUtils.java:134)
+	at org.eclipse.egit.ui.internal.clone.ProjectUtils.createProjects(ProjectUtils.java:60)
+	at org.eclipse.egit.ui.internal.clone.GitImportWizard.importProjects(GitImportWizard.java:253)
+	at org.eclipse.egit.ui.internal.clone.GitImportWizard.access$2(GitImportWizard.java:235)
+	at org.eclipse.egit.ui.internal.clone.GitImportWizard$4.run(GitImportWizard.java:205)
+	at org.eclipse.jface.operation.ModalContext$ModalContextThread.run(ModalContext.java:119)
+Contains: OK
+Contains: /Users/miguelgarcia/Documents/cs227b/General-Game-Playing/codebase/ggp-base overlaps the workspace location: /Users/miguelgarcia/Documents/cs227b/General-Game-Playing/codebase/ggp-base
+!SUBENTRY 1 org.eclipse.core.resources 4 77 2017-04-17 22:48:40.613
+!MESSAGE Invalid project description.
+!SUBENTRY 2 unknown 0 0 2017-04-17 22:48:40.613
+!MESSAGE OK
+!SUBENTRY 2 org.eclipse.core.resources 4 77 2017-04-17 22:48:40.613
+!MESSAGE /Users/miguelgarcia/Documents/cs227b/General-Game-Playing/codebase/ggp-base overlaps the workspace location: /Users/miguelgarcia/Documents/cs227b/General-Game-Playing/codebase/ggp-base
+
+!ENTRY org.eclipse.egit.ui 4 0 2017-04-17 22:48:43.936
+!MESSAGE Invalid project description.
+!STACK 1
+org.eclipse.core.internal.resources.ResourceException: Invalid project description.
+	at org.eclipse.core.internal.resources.Project.checkDescription(Project.java:169)
+	at org.eclipse.core.internal.resources.Project.assertCreateRequirements(Project.java:53)
+	at org.eclipse.core.internal.resources.Project.create(Project.java:263)
+	at org.eclipse.core.internal.resources.Project.create(Project.java:247)
+	at org.eclipse.egit.ui.internal.clone.ProjectUtils.createExistingProject(ProjectUtils.java:179)
+	at org.eclipse.egit.ui.internal.clone.ProjectUtils.access$0(ProjectUtils.java:142)
+	at org.eclipse.egit.ui.internal.clone.ProjectUtils$1.run(ProjectUtils.java:97)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2240)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2262)
+	at org.eclipse.egit.ui.internal.clone.ProjectUtils.createProjects(ProjectUtils.java:134)
+	at org.eclipse.egit.ui.internal.clone.ProjectUtils.createProjects(ProjectUtils.java:60)
+	at org.eclipse.egit.ui.internal.clone.GitImportWizard.importProjects(GitImportWizard.java:253)
+	at org.eclipse.egit.ui.internal.clone.GitImportWizard.access$2(GitImportWizard.java:235)
+	at org.eclipse.egit.ui.internal.clone.GitImportWizard$4.run(GitImportWizard.java:205)
+	at org.eclipse.jface.operation.ModalContext$ModalContextThread.run(ModalContext.java:119)
+Contains: OK
+Contains: /Users/miguelgarcia/Documents/cs227b/General-Game-Playing/codebase/ggp-base overlaps the workspace location: /Users/miguelgarcia/Documents/cs227b/General-Game-Playing/codebase/ggp-base
+!SUBENTRY 1 org.eclipse.core.resources 4 77 2017-04-17 22:48:43.936
+!MESSAGE Invalid project description.
+!SUBENTRY 2 unknown 0 0 2017-04-17 22:48:43.936
+!MESSAGE OK
+!SUBENTRY 2 org.eclipse.core.resources 4 77 2017-04-17 22:48:43.936
+!MESSAGE /Users/miguelgarcia/Documents/cs227b/General-Game-Playing/codebase/ggp-base overlaps the workspace location: /Users/miguelgarcia/Documents/cs227b/General-Game-Playing/codebase/ggp-base
+!SESSION 2017-04-17 22:49:48.733 -----------------------------------------------
+eclipse.buildId=4.6.2.M20161124-1400
+java.version=1.8.0_92
+java.vendor=Oracle Corporation
+BootLoader constants: OS=macosx, ARCH=x86_64, WS=cocoa, NL=en_US
+Framework arguments:  -product org.eclipse.epp.package.java.product -product org.eclipse.epp.package.java.product -keyring /Users/miguelgarcia/.eclipse_keyring
+Command-line arguments:  -os macosx -ws cocoa -arch x86_64 -product org.eclipse.epp.package.java.product -data /Users/miguelgarcia/Documents/cs227b/General-Game-Playing/codebase/ggp-base -product org.eclipse.epp.package.java.product -keyring /Users/miguelgarcia/.eclipse_keyring
+
+!ENTRY org.eclipse.core.net 1 0 2017-04-17 22:49:55.493
+!MESSAGE System property http.nonProxyHosts has been set to local|*.local|169.254/16|*.169.254/16 by an external source. This value will be overwritten using the values from the preferences
+
+!ENTRY org.eclipse.egit.ui 4 0 2017-04-17 22:51:21.823
+!MESSAGE Invalid project description.
+!STACK 1
+org.eclipse.core.internal.resources.ResourceException: Invalid project description.
+	at org.eclipse.core.internal.resources.Project.checkDescription(Project.java:169)
+	at org.eclipse.core.internal.resources.Project.assertCreateRequirements(Project.java:53)
+	at org.eclipse.core.internal.resources.Project.create(Project.java:263)
+	at org.eclipse.core.internal.resources.Project.create(Project.java:247)
+	at org.eclipse.egit.ui.internal.clone.ProjectUtils.createExistingProject(ProjectUtils.java:179)
+	at org.eclipse.egit.ui.internal.clone.ProjectUtils.access$0(ProjectUtils.java:142)
+	at org.eclipse.egit.ui.internal.clone.ProjectUtils$1.run(ProjectUtils.java:97)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2240)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2262)
+	at org.eclipse.egit.ui.internal.clone.ProjectUtils.createProjects(ProjectUtils.java:134)
+	at org.eclipse.egit.ui.internal.clone.ProjectUtils.createProjects(ProjectUtils.java:60)
+	at org.eclipse.egit.ui.internal.clone.GitImportWizard.importProjects(GitImportWizard.java:253)
+	at org.eclipse.egit.ui.internal.clone.GitImportWizard.access$2(GitImportWizard.java:235)
+	at org.eclipse.egit.ui.internal.clone.GitImportWizard$4.run(GitImportWizard.java:205)
+	at org.eclipse.jface.operation.ModalContext$ModalContextThread.run(ModalContext.java:119)
+Contains: OK
+Contains: /Users/miguelgarcia/Documents/cs227b/General-Game-Playing/codebase/ggp-base overlaps the workspace location: /Users/miguelgarcia/Documents/cs227b/General-Game-Playing/codebase/ggp-base
+!SUBENTRY 1 org.eclipse.core.resources 4 77 2017-04-17 22:51:21.824
+!MESSAGE Invalid project description.
+!SUBENTRY 2 unknown 0 0 2017-04-17 22:51:21.825
+!MESSAGE OK
+!SUBENTRY 2 org.eclipse.core.resources 4 77 2017-04-17 22:51:21.825
+!MESSAGE /Users/miguelgarcia/Documents/cs227b/General-Game-Playing/codebase/ggp-base overlaps the workspace location: /Users/miguelgarcia/Documents/cs227b/General-Game-Playing/codebase/ggp-base
