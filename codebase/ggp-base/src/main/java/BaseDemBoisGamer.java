@@ -37,16 +37,15 @@ public abstract class BaseDemBoisGamer extends StateMachineGamer{
 	}
 
 	protected Move getAlphaBetaMove(Role role, MachineState state, long timeout) throws MoveDefinitionException, TransitionDefinitionException, GoalDefinitionException{
-		//FIXME: cant beat the games
+		//FIXME: can't beat the games
 		StateMachine machine = getStateMachine();
 		List<Move> actions = machine.getLegalMoves(state, role);
 		Move action = actions.get(0);
 		int score=0;
-
+		int alpha=-1;
+		int beta=101;
 		for(int i=0;i<actions.size();i++)
 		{
-			int alpha=-1;
-			int beta=101;
 			int result= this.getABMinScore(role, actions.get(i), state, alpha, beta);
 			if(result==100){
 				return actions.get(i);
@@ -61,12 +60,12 @@ public abstract class BaseDemBoisGamer extends StateMachineGamer{
 	}
 
 	private int getABMinScore(Role role, Move action, MachineState state, int alpha, int beta) throws MoveDefinitionException, TransitionDefinitionException, GoalDefinitionException{
-		//FIXME: cant beat the games
+		//FIXME: can't beat the games
 		StateMachine machine = getStateMachine();
 		List<Role> players = machine.getRoles();
 		List<Role> opponents = new ArrayList<>();
 		for(int k=0;k<players.size();k++){
-			if(role!=players.get(k)){
+			if(!role.equals(players.get(k))){
 				opponents.add(players.get(k));
 			}
 		}
@@ -99,7 +98,7 @@ public abstract class BaseDemBoisGamer extends StateMachineGamer{
 	}
 
 	private int getABMaxScore(Role role, MachineState state, int alpha, int beta) throws GoalDefinitionException, MoveDefinitionException, TransitionDefinitionException{
-		//FIXME: cant beat the games
+		//FIXME: can't beat the games
 		StateMachine machine = getStateMachine();
 		if(machine.isTerminal(state))
 		{
