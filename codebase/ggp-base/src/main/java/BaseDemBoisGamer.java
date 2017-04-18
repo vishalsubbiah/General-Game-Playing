@@ -153,34 +153,13 @@ public abstract class BaseDemBoisGamer extends StateMachineGamer{
 
 	private int getABMinScore(Role role, Move action, MachineState state, int alpha, int beta) throws MoveDefinitionException, TransitionDefinitionException, GoalDefinitionException{
 		StateMachine machine = getStateMachine();
-		List<Role> players = machine.getRoles();
-		List<Role> opponents = new ArrayList<>();
-		for(int k=0;k<players.size();k++){
-			if(!role.equals(players.get(k))){
-				opponents.add(players.get(k));
-			}
-		}
-
-		for(int j=0;j<opponents.size();j++)
-		{	// works only for 2 players
-			Role opponent=opponents.get(j);
-			List<Move> actions = machine.getLegalMoves(state, opponent);
-			for(int i=0;i<actions.size();i++){
-				List<Move> move=new ArrayList<>();
-				if(role.equals(machine.getRoles().get(0))){
-					move.add(action);
-					move.add(actions.get(i));
-				}
-				else{
-					move.add(actions.get(i));
-					move.add(action);
-				}
-				MachineState nextstate =machine.getNextState(state, move);
-				int result = this.getABMaxScore(role, nextstate, alpha, beta);
-				beta = Math.min(beta, result);
-				if(beta<=alpha){
-					return alpha;
-				}
+		List<List<Move>> moveSets = this.getPossibleResponseMovesets(role, action, state);
+		for(List<Move> moveSet : moveSets){
+			MachineState newState = machine.getNextState(state, moveSet);
+			int newScore = this.getABMaxScore(role, newState, alpha, beta);
+			beta = Math.min(beta, newScore);
+			if(beta<=alpha){
+				return alpha;
 			}
 		}
 		return beta;
@@ -199,7 +178,6 @@ public abstract class BaseDemBoisGamer extends StateMachineGamer{
 			if(alpha>=beta){
 				return beta;
 			}
-
 		}
 		return alpha;
 	}
