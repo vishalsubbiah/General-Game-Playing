@@ -12,6 +12,8 @@ import org.ggp.base.util.statemachine.exceptions.GoalDefinitionException;
 import org.ggp.base.util.statemachine.exceptions.MoveDefinitionException;
 import org.ggp.base.util.statemachine.exceptions.TransitionDefinitionException;
 
+import dembois.heuristics.Heuristic;
+
 public abstract class BaseDemBoisGamer extends StateMachineGamer{
 	protected Move getCompulsiveDeliberationMove(Role role, MachineState state, long timeout) throws GoalDefinitionException, MoveDefinitionException, TransitionDefinitionException{
 		Move result = null;
@@ -180,5 +182,17 @@ public abstract class BaseDemBoisGamer extends StateMachineGamer{
 			}
 		}
 		return alpha;
+	}
+
+	protected Move getDepthFirstDLMove(Role role, MachineState state, Heuristic heuristic, long timeout){
+		return null;
+	}
+
+	private int getDLMinScore(Role role, Move action, MachineState state, Heuristic heuristic, int alpha, int beta, int depth){
+		return -1;
+	}
+
+	private int getDLMaxScore(Role role, MachineState state, Heuristic heuristic, int alpha, int beta, int depth){
+		return -1;
 	}
 }
