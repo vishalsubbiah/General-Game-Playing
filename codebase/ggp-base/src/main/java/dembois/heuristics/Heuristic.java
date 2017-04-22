@@ -1,7 +1,8 @@
 package dembois.heuristics;
 import org.ggp.base.util.statemachine.MachineState;
 import org.ggp.base.util.statemachine.Role;
+import org.ggp.base.util.statemachine.StateMachine;
 
 public interface Heuristic {
-	public int getValue(Role role, MachineState state);
+	public int getValue(Role role, MachineState state, StateMachine machine);
 }

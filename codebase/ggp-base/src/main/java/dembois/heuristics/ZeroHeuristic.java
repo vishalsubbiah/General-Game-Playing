@@ -1,12 +1,12 @@
 package dembois.heuristics;
 import org.ggp.base.util.statemachine.MachineState;
 import org.ggp.base.util.statemachine.Role;
+import org.ggp.base.util.statemachine.StateMachine;
 
 public class ZeroHeuristic implements Heuristic {
 
 	@Override
-	public int getValue(Role role, MachineState state) {
-		// TODO Auto-generated method stub
+	public int getValue(Role role, MachineState state, StateMachine machine) {
 		return 0;
 	}
 
