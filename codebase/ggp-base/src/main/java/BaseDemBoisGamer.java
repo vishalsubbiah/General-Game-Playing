@@ -1,5 +1,3 @@
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -12,7 +10,7 @@ import org.ggp.base.util.statemachine.exceptions.GoalDefinitionException;
 import org.ggp.base.util.statemachine.exceptions.MoveDefinitionException;
 import org.ggp.base.util.statemachine.exceptions.TransitionDefinitionException;
 
-import dembois.heuristics.Heuristic;
+//import dembois.heuristics.Heuristic;
 
 public abstract class BaseDemBoisGamer extends StateMachineGamer{
 	protected Move getCompulsiveDeliberationMove(Role role, MachineState state, long timeout) throws GoalDefinitionException, MoveDefinitionException, TransitionDefinitionException{
@@ -71,7 +69,7 @@ public abstract class BaseDemBoisGamer extends StateMachineGamer{
 		return score;
 	}
 
-	private List<List<Move>> getPossibleResponseMovesets(Role role, Move action, MachineState state) throws MoveDefinitionException{
+	/*private List<List<Move>> getPossibleResponseMovesets(Role role, Move action, MachineState state) throws MoveDefinitionException{
 		StateMachine machine = getStateMachine();
 		Map<Role, List<Move>> legalMoveMap = new HashMap<Role, List<Move>>();
 		List<Role> players = machine.getRoles();
@@ -112,7 +110,7 @@ public abstract class BaseDemBoisGamer extends StateMachineGamer{
 			scopeSize = scopeSize/numMoves;
 		}
 		return moveSets;
-	}
+	}*/
 
 	private int getMMMaxScore(Role role, MachineState state) throws GoalDefinitionException, MoveDefinitionException, TransitionDefinitionException{
 		StateMachine machine = getStateMachine();
@@ -183,15 +181,15 @@ public abstract class BaseDemBoisGamer extends StateMachineGamer{
 		return alpha;
 	}
 
-	protected Move getDepthFirstDLMove(Role role, MachineState state, Heuristic heuristic, long timeout){
+	protected Move getDepthFirstDLMove(Role role, MachineState state, long timeout){
 		return null;
 	}
 
-	private int getDLMinScore(Role role, Move action, MachineState state, Heuristic heuristic, int alpha, int beta, int depth){
+	private int getDLMinScore(Role role, Move action, MachineState state, int alpha, int beta, int depth){
 		return -1;
 	}
 
-	private int getDLMaxScore(Role role, MachineState state, Heuristic heuristic, int alpha, int beta, int depth){
+	private int getDLMaxScore(Role role, MachineState state, int alpha, int beta, int depth){
 		return -1;
 	}
 }
