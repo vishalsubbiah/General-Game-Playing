@@ -9,5 +9,4 @@ public class ZeroHeuristic implements Heuristic {
 	public int getValue(Role role, MachineState state, StateMachine machine) {
 		return 0;
 	}
-
 }
