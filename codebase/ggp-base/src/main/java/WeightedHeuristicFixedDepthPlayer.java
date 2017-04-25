@@ -37,15 +37,15 @@ public class WeightedHeuristicFixedDepthPlayer extends BaseDemBoisGamer {
 	@Override
 	public Move stateMachineSelectMove(long timeout)
 			throws TransitionDefinitionException, MoveDefinitionException, GoalDefinitionException {
-		long actual_time=(long) (timeout-6*Math.pow(10,3));
+		long actual_time=(long) (timeout-4*Math.pow(10,3));
 		StateMachine machine = getStateMachine();
 		MachineState state= getCurrentState();
 		List<Role> roles = machine.getRoles();
 		Role role = getRole();
 		Map<Heuristic, Double> hMap = new HashMap<>();
-		hMap.put(new MobilityHeuristic(0), 0.25);
+		hMap.put(new MobilityHeuristic(1), 0.25);
 		hMap.put(new GoalProximityHeuristic(), 0.5);
-		hMap.put(new OpponentMobilityHeuristic(0), 0.25);
+		hMap.put(new OpponentMobilityHeuristic(1), 0.25);
 		if(roles.size()==1){
 			return getDLDeliberationMove(role, state, new WeightedHeuristic(hMap), actual_time);
 		}
