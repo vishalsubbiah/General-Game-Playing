@@ -7,7 +7,7 @@ import org.ggp.base.util.statemachine.exceptions.GoalDefinitionException;
 public class GoalProximityHeuristic implements Heuristic {
 
 	@Override
-	public int getValue(Role role, MachineState state, StateMachine machine) throws GoalDefinitionException {
+	public int getValue(Role role, MachineState state, StateMachine machine, long timeout) throws GoalDefinitionException {
 		return machine.getGoal(state, role);
 	}
 

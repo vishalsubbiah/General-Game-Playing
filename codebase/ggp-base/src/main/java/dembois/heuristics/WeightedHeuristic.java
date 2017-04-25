@@ -16,10 +16,10 @@ public class WeightedHeuristic implements Heuristic {
 		this.heuristicMap = heuristicMap;
 	}
 	@Override
-	public int getValue(Role role, MachineState state, StateMachine machine) throws GoalDefinitionException, MoveDefinitionException, TransitionDefinitionException {
+	public int getValue(Role role, MachineState state, StateMachine machine, long timeout) throws GoalDefinitionException, MoveDefinitionException, TransitionDefinitionException {
 		int scoreSum = 0;
 		for(Map.Entry<Heuristic, Double> pair : heuristicMap.entrySet()){
-			scoreSum += pair.getKey().getValue(role, state, machine) * pair.getValue();
+			scoreSum += pair.getKey().getValue(role, state, machine, timeout) * pair.getValue();
 		}
 		return scoreSum;
 	}

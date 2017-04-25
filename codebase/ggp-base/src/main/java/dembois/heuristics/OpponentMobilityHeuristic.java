@@ -10,11 +10,11 @@ import org.ggp.base.util.statemachine.exceptions.TransitionDefinitionException;
 public class OpponentMobilityHeuristic implements Heuristic {
 
 	private MobilityHeuristic heuristic;
-	public OpponentMobilityHeuristic(int feasibleMoves, int numSteps){
-		this.heuristic = new MobilityHeuristic(feasibleMoves, numSteps);
+	public OpponentMobilityHeuristic(int numSteps){
+		this.heuristic = new MobilityHeuristic(numSteps);
 	}
 	@Override
-	public int getValue(Role role, MachineState state, StateMachine machine) throws MoveDefinitionException, TransitionDefinitionException {
+	public int getValue(Role role, MachineState state, StateMachine machine, long timeout) throws MoveDefinitionException, TransitionDefinitionException {
 		List<Role> roles = machine.getRoles();
 		int opponentCount = 0;
 		int opponentScoreSum = 0;
@@ -23,7 +23,10 @@ public class OpponentMobilityHeuristic implements Heuristic {
 				continue;
 			}
 			opponentCount += 1;
-			opponentScoreSum = heuristic.getValue(opp, state, machine);
+			opponentScoreSum = heuristic.getValue(opp, state, machine, timeout);
+		}
+		if(opponentCount == 0){
+			return 100;
 		}
 		return 100 - opponentScoreSum / opponentCount;
 	}

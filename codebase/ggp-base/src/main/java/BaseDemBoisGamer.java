@@ -10,7 +10,7 @@ import org.ggp.base.util.statemachine.exceptions.GoalDefinitionException;
 import org.ggp.base.util.statemachine.exceptions.MoveDefinitionException;
 import org.ggp.base.util.statemachine.exceptions.TransitionDefinitionException;
 
-//import dembois.heuristics.Heuristic;
+import dembois.heuristics.Heuristic;
 
 public abstract class BaseDemBoisGamer extends StateMachineGamer{
 	protected Move getCompulsiveDeliberationMove(Role role, MachineState state, long timeout) throws GoalDefinitionException, MoveDefinitionException, TransitionDefinitionException{
@@ -40,7 +40,7 @@ public abstract class BaseDemBoisGamer extends StateMachineGamer{
 		return score;
 	}
 
-	protected Move getDLDeliberationMove(Role role, MachineState state, long timeout) throws GoalDefinitionException, MoveDefinitionException, TransitionDefinitionException{
+	protected Move getDLDeliberationMove(Role role, MachineState state, Heuristic heuristic, long timeout) throws GoalDefinitionException, MoveDefinitionException, TransitionDefinitionException{
 		Move result = null;
 		Map<Move, List<MachineState>> moves_to_states = getStateMachine().getNextStates(state, role);
 
@@ -48,25 +48,29 @@ public abstract class BaseDemBoisGamer extends StateMachineGamer{
 		long depth=(long) (System.currentTimeMillis());
 		for(Move m: moves_to_states.keySet()){
 			MachineState s = moves_to_states.get(m).get(0); //assuming this is single player, each move will only return one state
-			if(getDLDeliberationMaxScore(role, s,depth,timeout) == 100) {return m;}
-			if(getDLDeliberationMaxScore(role, s,depth,timeout) > maxScore) {result = m;}
+			int value = getDLDeliberationMaxScore(role, s,depth, heuristic, timeout);
+			if(value == 100) {return m;}
+			if(value > maxScore) {
+				result = m;
+				maxScore = value;
+			}
 		}
-			return result;
+		return result;
 	}
 
-	private int getDLDeliberationMaxScore(Role role, MachineState state, long depth,long timeout) throws GoalDefinitionException, MoveDefinitionException, TransitionDefinitionException{
+	private int getDLDeliberationMaxScore(Role role, MachineState state, long depth, Heuristic heuristic, long timeout) throws GoalDefinitionException, MoveDefinitionException, TransitionDefinitionException{
 		if(getStateMachine().isTerminal(state)){
 			return getStateMachine().getGoal(state, role);
 		}
 		int score = 0;
 		if(depth>timeout){
-			return zeroeval(role,state);
+			return heuristic.getValue(role,state,getStateMachine(),timeout);
 		}
 		depth=(long) (System.currentTimeMillis());
 		Map<Move, List<MachineState>> moves_to_states = getStateMachine().getNextStates(state, role);
 		for(Move m: moves_to_states.keySet()){
 			MachineState s = moves_to_states.get(m).get(0);
-			int currentScore = getDLDeliberationMaxScore(role, s,depth,timeout);
+			int currentScore = getDLDeliberationMaxScore(role, s,depth, heuristic, timeout);
 			if(currentScore > score) score = currentScore;
 		}
 		return score;
@@ -170,7 +174,7 @@ public abstract class BaseDemBoisGamer extends StateMachineGamer{
 		return alpha;
 	}
 
-	protected Move getDepthFirstDLMove(Role role, MachineState state, long timeout) throws MoveDefinitionException, TransitionDefinitionException, GoalDefinitionException{
+	protected Move getDepthFirstDLMove(Role role, MachineState state, Heuristic heuristic, long timeout) throws MoveDefinitionException, TransitionDefinitionException, GoalDefinitionException{
 		//long actual_time=timeout-3;
 
 		StateMachine machine = getStateMachine();
@@ -182,7 +186,7 @@ public abstract class BaseDemBoisGamer extends StateMachineGamer{
 		long depth = (long) (System.currentTimeMillis());
 		for(int i=0;i<actions.size();i++)
 		{
-			int result= this.getDLMinScore(role, actions.get(i), state, alpha, beta, depth,timeout);
+			int result= this.getDLMinScore(role, actions.get(i), state, alpha, beta, depth, heuristic, timeout);
 			if(result==100){
 				return actions.get(i);
 			}
@@ -194,15 +198,13 @@ public abstract class BaseDemBoisGamer extends StateMachineGamer{
 		}
 		return action;
 	}
-	private int zeroeval(Role role, MachineState state){
-		return 0;
-	}
-	private int getDLMinScore(Role role, Move action, MachineState state, int alpha, int beta, long depth,long timeout) throws MoveDefinitionException, TransitionDefinitionException, GoalDefinitionException{
+
+	private int getDLMinScore(Role role, Move action, MachineState state, int alpha, int beta, long depth, Heuristic heuristic, long timeout) throws MoveDefinitionException, TransitionDefinitionException, GoalDefinitionException{
 		StateMachine machine = getStateMachine();
 		List<List<Move>> moveSets = machine.getLegalJointMoves(state, role, action);
 		for(List<Move> moveSet : moveSets){
 			MachineState newState = machine.getNextState(state, moveSet);
-			int newScore = this.getDLMaxScore(role, newState, alpha, beta,depth,timeout);
+			int newScore = this.getDLMaxScore(role, newState, alpha, beta, depth, heuristic, timeout);
 			if(newScore==0){
 				return 0;
 			}
@@ -214,19 +216,19 @@ public abstract class BaseDemBoisGamer extends StateMachineGamer{
 		return beta;
 	}
 
-	private int getDLMaxScore(Role role, MachineState state, int alpha, int beta, long depth,long timeout) throws GoalDefinitionException, MoveDefinitionException, TransitionDefinitionException{
+	private int getDLMaxScore(Role role, MachineState state, int alpha, int beta, long depth, Heuristic heuristic, long timeout) throws GoalDefinitionException, MoveDefinitionException, TransitionDefinitionException{
 		StateMachine machine = getStateMachine();
 		if(machine.isTerminal(state))
 		{
 			return machine.getGoal(state, role);
 		}
 		if(depth>=timeout){
-			return zeroeval(role,state);
+			return heuristic.getValue(role,state,machine,timeout);
 		}
 		depth=(long) (System.currentTimeMillis()) ;
 		List<Move> actions = machine.getLegalMoves(state, role);
 		for(int i=0;i<actions.size();i++){
-			int result=this.getDLMinScore(role, actions.get(i), state, alpha, beta,depth,timeout);
+			int result=this.getDLMinScore(role, actions.get(i), state, alpha, beta, depth, heuristic, timeout);
 			alpha=Math.max(alpha,result);
 			if(alpha>=beta){
 				return beta;

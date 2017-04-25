@@ -12,15 +12,13 @@ import org.ggp.base.util.statemachine.exceptions.TransitionDefinitionException;
 
 public class MobilityHeuristic implements Heuristic {
 
-	private int feasibleMoves;
 	private int numSteps;
-	public MobilityHeuristic(int feasibleMoves, int numSteps){
-		this.feasibleMoves = feasibleMoves;
+	public MobilityHeuristic(int numSteps){
 		this.numSteps = numSteps;
 	}
 
 	@Override
-	public int getValue(Role role, MachineState state, StateMachine machine) throws MoveDefinitionException, TransitionDefinitionException {
+	public int getValue(Role role, MachineState state, StateMachine machine, long timeout) throws MoveDefinitionException, TransitionDefinitionException {
 		return getStatesAvailableAfterNSteps(role, state, machine);
 	}
 
@@ -47,6 +45,6 @@ public class MobilityHeuristic implements Heuristic {
 			MachineState curState = nextQueue.poll();
 			numActions += machine.getLegalMoves(curState, role).size();
 		}
-		return numActions * 100 / this.feasibleMoves;
+		return numActions * 100 / machine.findActions(role).size();
 	}
 }

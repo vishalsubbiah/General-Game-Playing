@@ -12,6 +12,8 @@ import org.ggp.base.util.statemachine.exceptions.MoveDefinitionException;
 import org.ggp.base.util.statemachine.exceptions.TransitionDefinitionException;
 import org.ggp.base.util.statemachine.implementation.prover.ProverStateMachine;
 
+import dembois.heuristics.ZeroHeuristic;
+
 public class FixedDepthPlayer extends BaseDemBoisGamer {
 
 	@Override
@@ -37,10 +39,10 @@ public class FixedDepthPlayer extends BaseDemBoisGamer {
 		List<Role> roles = machine.getRoles();
 		Role role = getRole();
 		if(roles.size()==1){
-			return getDLDeliberationMove(role, state, actual_time);
+			return getDLDeliberationMove(role, state, new ZeroHeuristic(), actual_time);
 		}
 		else{
-			return getDepthFirstDLMove(role, state,  actual_time);
+			return getDepthFirstDLMove(role, state, new ZeroHeuristic(), actual_time);
 		}
 	}
 

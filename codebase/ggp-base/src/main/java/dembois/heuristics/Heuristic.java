@@ -7,5 +7,5 @@ import org.ggp.base.util.statemachine.exceptions.MoveDefinitionException;
 import org.ggp.base.util.statemachine.exceptions.TransitionDefinitionException;
 
 public interface Heuristic {
-	public int getValue(Role role, MachineState state, StateMachine machine) throws GoalDefinitionException, MoveDefinitionException, TransitionDefinitionException;
+	public int getValue(Role role, MachineState state, StateMachine machine, long timeout) throws GoalDefinitionException, MoveDefinitionException, TransitionDefinitionException;
 }
