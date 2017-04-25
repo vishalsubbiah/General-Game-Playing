@@ -1,14 +1,31 @@
 package dembois.heuristics;
+import java.util.List;
+
 import org.ggp.base.util.statemachine.MachineState;
 import org.ggp.base.util.statemachine.Role;
 import org.ggp.base.util.statemachine.StateMachine;
+import org.ggp.base.util.statemachine.exceptions.MoveDefinitionException;
+import org.ggp.base.util.statemachine.exceptions.TransitionDefinitionException;
 
 public class OpponentMobilityHeuristic implements Heuristic {
 
+	private MobilityHeuristic heuristic;
+	public OpponentMobilityHeuristic(int feasibleMoves, int numSteps){
+		this.heuristic = new MobilityHeuristic(feasibleMoves, numSteps);
+	}
 	@Override
-	public int getValue(Role role, MachineState state, StateMachine machine) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int getValue(Role role, MachineState state, StateMachine machine) throws MoveDefinitionException, TransitionDefinitionException {
+		List<Role> roles = machine.getRoles();
+		int opponentCount = 0;
+		int opponentScoreSum = 0;
+		for(Role opp : roles){
+			if(opp.equals(role)){
+				continue;
+			}
+			opponentCount += 1;
+			opponentScoreSum = heuristic.getValue(opp, state, machine);
+		}
+		return 100 - opponentScoreSum / opponentCount;
 	}
 
 }
