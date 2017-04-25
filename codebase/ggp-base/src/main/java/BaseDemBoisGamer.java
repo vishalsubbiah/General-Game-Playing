@@ -40,6 +40,38 @@ public abstract class BaseDemBoisGamer extends StateMachineGamer{
 		return score;
 	}
 
+	protected Move getDLDeliberationMove(Role role, MachineState state, long timeout) throws GoalDefinitionException, MoveDefinitionException, TransitionDefinitionException{
+		Move result = null;
+		Map<Move, List<MachineState>> moves_to_states = getStateMachine().getNextStates(state, role);
+
+		int maxScore = 0;
+		long depth=(long) (System.currentTimeMillis());
+		for(Move m: moves_to_states.keySet()){
+			MachineState s = moves_to_states.get(m).get(0); //assuming this is single player, each move will only return one state
+			if(getDLDeliberationMaxScore(role, s,depth,timeout) == 100) {return m;}
+			if(getDLDeliberationMaxScore(role, s,depth,timeout) > maxScore) {result = m;}
+		}
+			return result;
+	}
+
+	private int getDLDeliberationMaxScore(Role role, MachineState state, long depth,long timeout) throws GoalDefinitionException, MoveDefinitionException, TransitionDefinitionException{
+		if(getStateMachine().isTerminal(state)){
+			return getStateMachine().getGoal(state, role);
+		}
+		int score = 0;
+		if(depth>timeout){
+			return zeroeval(role,state);
+		}
+		depth=(long) (System.currentTimeMillis());
+		Map<Move, List<MachineState>> moves_to_states = getStateMachine().getNextStates(state, role);
+		for(Move m: moves_to_states.keySet()){
+			MachineState s = moves_to_states.get(m).get(0);
+			int currentScore = getDLDeliberationMaxScore(role, s,depth,timeout);
+			if(currentScore > score) score = currentScore;
+		}
+		return score;
+	}
+
 	protected Move getMinimaxMove(Role role, MachineState state, long timeout) throws MoveDefinitionException, TransitionDefinitionException, GoalDefinitionException{
 		StateMachine machine = getStateMachine();
 		List<Move> actions = machine.getLegalMoves(state, role);
@@ -139,19 +171,22 @@ public abstract class BaseDemBoisGamer extends StateMachineGamer{
 	}
 
 	protected Move getDepthFirstDLMove(Role role, MachineState state, long timeout) throws MoveDefinitionException, TransitionDefinitionException, GoalDefinitionException{
+		//long actual_time=timeout-3;
+
 		StateMachine machine = getStateMachine();
 		List<Move> actions = machine.getLegalMoves(state, role);
 		Move action = actions.get(0);
 		int score=0;
 		int alpha=0;
 		int beta=100;
-		int level=1;
+		long depth = (long) (System.currentTimeMillis());
 		for(int i=0;i<actions.size();i++)
 		{
-			int result= this.getDLMinScore(role, actions.get(i), state, alpha, beta, level);
+			int result= this.getDLMinScore(role, actions.get(i), state, alpha, beta, depth,timeout);
 			if(result==100){
 				return actions.get(i);
 			}
+
 			if(result>score){
 				score=result;
 				action=actions.get(i);
@@ -162,12 +197,12 @@ public abstract class BaseDemBoisGamer extends StateMachineGamer{
 	private int zeroeval(Role role, MachineState state){
 		return 0;
 	}
-	private int getDLMinScore(Role role, Move action, MachineState state, int alpha, int beta, int depth) throws MoveDefinitionException, TransitionDefinitionException, GoalDefinitionException{
+	private int getDLMinScore(Role role, Move action, MachineState state, int alpha, int beta, long depth,long timeout) throws MoveDefinitionException, TransitionDefinitionException, GoalDefinitionException{
 		StateMachine machine = getStateMachine();
 		List<List<Move>> moveSets = machine.getLegalJointMoves(state, role, action);
 		for(List<Move> moveSet : moveSets){
 			MachineState newState = machine.getNextState(state, moveSet);
-			int newScore = this.getDLMaxScore(role, newState, alpha, beta,depth);
+			int newScore = this.getDLMaxScore(role, newState, alpha, beta,depth,timeout);
 			if(newScore==0){
 				return 0;
 			}
@@ -179,19 +214,19 @@ public abstract class BaseDemBoisGamer extends StateMachineGamer{
 		return beta;
 	}
 
-	private int getDLMaxScore(Role role, MachineState state, int alpha, int beta, int depth) throws GoalDefinitionException, MoveDefinitionException, TransitionDefinitionException{
-		int limit=1;
+	private int getDLMaxScore(Role role, MachineState state, int alpha, int beta, long depth,long timeout) throws GoalDefinitionException, MoveDefinitionException, TransitionDefinitionException{
 		StateMachine machine = getStateMachine();
 		if(machine.isTerminal(state))
 		{
 			return machine.getGoal(state, role);
 		}
-		if(depth>=limit){
+		if(depth>=timeout){
 			return zeroeval(role,state);
 		}
+		depth=(long) (System.currentTimeMillis()) ;
 		List<Move> actions = machine.getLegalMoves(state, role);
 		for(int i=0;i<actions.size();i++){
-			int result=this.getDLMinScore(role, actions.get(i), state, alpha, beta,depth);
+			int result=this.getDLMinScore(role, actions.get(i), state, alpha, beta,depth,timeout);
 			alpha=Math.max(alpha,result);
 			if(alpha>=beta){
 				return beta;
