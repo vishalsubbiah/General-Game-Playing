@@ -38,10 +38,10 @@ public class MobilityHeuristicFixedDepthPlayer extends BaseDemBoisGamer {
 		List<Role> roles = machine.getRoles();
 		Role role = getRole();
 		if(roles.size()==1){
-			return getDLDeliberationMove(role, state, new MobilityHeuristic(1), actual_time);
+			return getDLDeliberationMove(role, state, new MobilityHeuristic(0), actual_time);
 		}
 		else{
-			return getDepthFirstDLMove(role, state, new MobilityHeuristic(1), actual_time);
+			return getDepthFirstDLMove(role, state, new MobilityHeuristic(0), actual_time);
 		}
 	}
 
