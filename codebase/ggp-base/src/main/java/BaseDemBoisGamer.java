@@ -69,48 +69,6 @@ public abstract class BaseDemBoisGamer extends StateMachineGamer{
 		return score;
 	}
 
-	/*private List<List<Move>> getPossibleResponseMovesets(Role role, Move action, MachineState state) throws MoveDefinitionException{
-		StateMachine machine = getStateMachine();
-		Map<Role, List<Move>> legalMoveMap = new HashMap<Role, List<Move>>();
-		List<Role> players = machine.getRoles();
-		int numMovesets = 1;
-		for(Role player : players){
-			if(player.equals(role)){
-				List<Move> legalMoves = new ArrayList<Move>();
-				legalMoves.add(action);
-				legalMoveMap.put(player, legalMoves);
-				continue;
-			}
-			List<Move> legalMoves = machine.getLegalMoves(state, player);
-			numMovesets *= legalMoves.size();
-			legalMoveMap.put(player, legalMoves);
-		}
-		List<List<Move>> moveSets = new ArrayList<List<Move>>();
-		for(int i=0;i<numMovesets;i++){
-			moveSets.add(new ArrayList<Move>());
-		}
-		int scopeSize = numMovesets;
-		for(Role player : players){
-			if(player.equals(role)){
-				for(List<Move> moveSet : moveSets){
-					moveSet.add(action);
-				}
-				continue;
-			}
-			List<Move> legalMoves = legalMoveMap.get(player);
-			int numMoves = legalMoves.size();
-			for(int tiling=0;tiling<numMovesets/scopeSize;tiling++){
-				for(int i=0;i<numMoves;i++){
-					Move move = legalMoves.get(i);
-					for(int t=0;t<scopeSize/numMoves;t++){
-						moveSets.get(t + i*(scopeSize/numMoves) + tiling*scopeSize).add(move);
-					}
-				}
-			}
-			scopeSize = scopeSize/numMoves;
-		}
-		return moveSets;
-	}*/
 
 	private int getMMMaxScore(Role role, MachineState state) throws GoalDefinitionException, MoveDefinitionException, TransitionDefinitionException{
 		StateMachine machine = getStateMachine();
@@ -151,7 +109,6 @@ public abstract class BaseDemBoisGamer extends StateMachineGamer{
 
 	private int getABMinScore(Role role, Move action, MachineState state, int alpha, int beta) throws MoveDefinitionException, TransitionDefinitionException, GoalDefinitionException{
 		StateMachine machine = getStateMachine();
-		//List<List<Move>> moveSets = this.getPossibleResponseMovesets(role, action, state);
 		List<List<Move>> moveSets = machine.getLegalJointMoves(state, role, action);
 		for(List<Move> moveSet : moveSets){
 			MachineState newState = machine.getNextState(state, moveSet);
@@ -181,15 +138,66 @@ public abstract class BaseDemBoisGamer extends StateMachineGamer{
 		return alpha;
 	}
 
-	protected Move getDepthFirstDLMove(Role role, MachineState state, long timeout){
-		return null;
+	protected Move getDepthFirstDLMove(Role role, MachineState state, long timeout) throws MoveDefinitionException, TransitionDefinitionException, GoalDefinitionException{
+		StateMachine machine = getStateMachine();
+		List<Move> actions = machine.getLegalMoves(state, role);
+		Move action = actions.get(0);
+		int score=0;
+		int alpha=0;
+		int beta=100;
+		int level=1;
+		for(int i=0;i<actions.size();i++)
+		{
+			int result= this.getDLMinScore(role, actions.get(i), state, alpha, beta, level);
+			if(result==100){
+				return actions.get(i);
+			}
+			if(result>score){
+				score=result;
+				action=actions.get(i);
+			}
+		}
+		return action;
+	}
+	private int zeroeval(Role role, MachineState state){
+		return 0;
+	}
+	private int getDLMinScore(Role role, Move action, MachineState state, int alpha, int beta, int depth) throws MoveDefinitionException, TransitionDefinitionException, GoalDefinitionException{
+		StateMachine machine = getStateMachine();
+		List<List<Move>> moveSets = machine.getLegalJointMoves(state, role, action);
+		for(List<Move> moveSet : moveSets){
+			MachineState newState = machine.getNextState(state, moveSet);
+			int newScore = this.getDLMaxScore(role, newState, alpha, beta,depth);
+			if(newScore==0){
+				return 0;
+			}
+			beta = Math.min(beta, newScore);
+			if(beta<=alpha){
+				return alpha;
+			}
+		}
+		return beta;
 	}
 
-	private int getDLMinScore(Role role, Move action, MachineState state, int alpha, int beta, int depth){
-		return -1;
+	private int getDLMaxScore(Role role, MachineState state, int alpha, int beta, int depth) throws GoalDefinitionException, MoveDefinitionException, TransitionDefinitionException{
+		int limit=1;
+		StateMachine machine = getStateMachine();
+		if(machine.isTerminal(state))
+		{
+			return machine.getGoal(state, role);
+		}
+		if(depth>=limit){
+			return zeroeval(role,state);
+		}
+		List<Move> actions = machine.getLegalMoves(state, role);
+		for(int i=0;i<actions.size();i++){
+			int result=this.getDLMinScore(role, actions.get(i), state, alpha, beta,depth);
+			alpha=Math.max(alpha,result);
+			if(alpha>=beta){
+				return beta;
+			}
+		}
+		return alpha;
 	}
 
-	private int getDLMaxScore(Role role, MachineState state, int alpha, int beta, int depth){
-		return -1;
-	}
 }
