@@ -43,9 +43,9 @@ public class WeightedHeuristicFixedDepthPlayer extends BaseDemBoisGamer {
 		List<Role> roles = machine.getRoles();
 		Role role = getRole();
 		Map<Heuristic, Double> hMap = new HashMap<>();
-		hMap.put(new MobilityHeuristic(1), 0.25);
-		hMap.put(new GoalProximityHeuristic(), 0.5);
-		hMap.put(new OpponentMobilityHeuristic(1), 0.25);
+		hMap.put(new MobilityHeuristic(0), 0.2);
+		hMap.put(new GoalProximityHeuristic(), 0.6);
+		hMap.put(new OpponentMobilityHeuristic(0), 0.2);
 		if(roles.size()==1){
 			return getDLDeliberationMove(role, state, new WeightedHeuristic(hMap), actual_time);
 		}
