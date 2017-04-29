@@ -52,7 +52,7 @@ public class MonteCarloSearchTree extends StateMachineGamer {
 	@Override
 	public String getName() {
 		// TODO Auto-generated method stub
-		return null;
+		return "MonteCarloSearchTreePlayer";
 	}
 
 }
