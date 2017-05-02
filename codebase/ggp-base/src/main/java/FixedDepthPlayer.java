@@ -12,6 +12,7 @@ import org.ggp.base.util.statemachine.exceptions.MoveDefinitionException;
 import org.ggp.base.util.statemachine.exceptions.TransitionDefinitionException;
 import org.ggp.base.util.statemachine.implementation.prover.ProverStateMachine;
 
+import dembois.base.BaseDemBoisGamer;
 import dembois.heuristics.ZeroHeuristic;
 
 public class FixedDepthPlayer extends BaseDemBoisGamer {

@@ -1,20 +1,27 @@
-package MonteCarlo;
+package dembois.montecarlo;
+
+import java.util.List;
 
 import org.ggp.base.player.gamer.exception.GamePreviewException;
-import org.ggp.base.player.gamer.statemachine.StateMachineGamer;
 import org.ggp.base.util.game.Game;
+import org.ggp.base.util.statemachine.MachineState;
 import org.ggp.base.util.statemachine.Move;
+import org.ggp.base.util.statemachine.Role;
 import org.ggp.base.util.statemachine.StateMachine;
+import org.ggp.base.util.statemachine.cache.CachedStateMachine;
 import org.ggp.base.util.statemachine.exceptions.GoalDefinitionException;
 import org.ggp.base.util.statemachine.exceptions.MoveDefinitionException;
 import org.ggp.base.util.statemachine.exceptions.TransitionDefinitionException;
+import org.ggp.base.util.statemachine.implementation.prover.ProverStateMachine;
 
-public class MonteCarloSearchTree extends StateMachineGamer {
+import dembois.base.BaseHeuristicGamer;
+import dembois.heuristics.MonteCarloHeuristic;
+
+public class MonteCarloHeuristicGamer extends BaseHeuristicGamer {
 
 	@Override
 	public StateMachine getInitialStateMachine() {
-		// TODO Auto-generated method stub
-		return null;
+		return new CachedStateMachine(new ProverStateMachine());
 	}
 
 	@Override
@@ -27,8 +34,18 @@ public class MonteCarloSearchTree extends StateMachineGamer {
 	@Override
 	public Move stateMachineSelectMove(long timeout)
 			throws TransitionDefinitionException, MoveDefinitionException, GoalDefinitionException {
-		// TODO Auto-generated method stub
-		return null;
+		long heuristic_begin_time=(long) (System.currentTimeMillis() + (timeout - System.currentTimeMillis())/10);
+		long submit_timeout = (long)(timeout - 3*Math.pow(10,3));
+		StateMachine machine = getStateMachine();
+		MachineState state= getCurrentState();
+		List<Role> roles = machine.getRoles();
+		Role role = getRole();
+		if(roles.size()==1){
+			return getDLDeliberationMove(role, state, new MonteCarloHeuristic(4), heuristic_begin_time, submit_timeout);
+		}
+		else{
+			return getDLAlphaBetaMove(role, state, new MonteCarloHeuristic(4), heuristic_begin_time, submit_timeout);
+		}
 	}
 
 	@Override
@@ -52,7 +69,6 @@ public class MonteCarloSearchTree extends StateMachineGamer {
 	@Override
 	public String getName() {
 		// TODO Auto-generated method stub
-		return "MonteCarloSearchTreePlayer";
+		return "MonteCarloHeuristicPlayer";
 	}
-
 }
