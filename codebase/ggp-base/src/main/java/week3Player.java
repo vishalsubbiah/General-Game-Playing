@@ -12,6 +12,8 @@ import org.ggp.base.util.statemachine.exceptions.MoveDefinitionException;
 import org.ggp.base.util.statemachine.exceptions.TransitionDefinitionException;
 import org.ggp.base.util.statemachine.implementation.prover.ProverStateMachine;
 
+import dembois.base.BaseDemBoisGamer;
+
 public class week3Player extends BaseDemBoisGamer {
 
 	@Override

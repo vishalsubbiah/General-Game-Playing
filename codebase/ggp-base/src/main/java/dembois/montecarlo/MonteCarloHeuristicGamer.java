@@ -1,3 +1,5 @@
+package dembois.montecarlo;
+
 import java.util.List;
 
 import org.ggp.base.player.gamer.exception.GamePreviewException;
@@ -12,14 +14,13 @@ import org.ggp.base.util.statemachine.exceptions.MoveDefinitionException;
 import org.ggp.base.util.statemachine.exceptions.TransitionDefinitionException;
 import org.ggp.base.util.statemachine.implementation.prover.ProverStateMachine;
 
-import dembois.base.BaseDemBoisGamer;
-import dembois.heuristics.MobilityHeuristic;
+import dembois.base.BaseHeuristicGamer;
+import dembois.heuristics.MonteCarloHeuristic;
 
-public class MobilityHeuristicFixedDepthPlayer extends BaseDemBoisGamer {
+public class MonteCarloHeuristicGamer extends BaseHeuristicGamer {
 
 	@Override
 	public StateMachine getInitialStateMachine() {
-		// TODO Auto-generated method stub
 		return new CachedStateMachine(new ProverStateMachine());
 	}
 
@@ -33,16 +34,17 @@ public class MobilityHeuristicFixedDepthPlayer extends BaseDemBoisGamer {
 	@Override
 	public Move stateMachineSelectMove(long timeout)
 			throws TransitionDefinitionException, MoveDefinitionException, GoalDefinitionException {
-		long actual_time=(long) (timeout-4*Math.pow(10,3));
+		long heuristic_begin_time=(long) (System.currentTimeMillis() + (timeout - System.currentTimeMillis())/10);
+		long submit_timeout = (long)(timeout - 3*Math.pow(10,3));
 		StateMachine machine = getStateMachine();
 		MachineState state= getCurrentState();
 		List<Role> roles = machine.getRoles();
 		Role role = getRole();
 		if(roles.size()==1){
-			return getDLDeliberationMove(role, state, new MobilityHeuristic(0), actual_time);
+			return getDLDeliberationMove(role, state, new MonteCarloHeuristic(4), heuristic_begin_time, submit_timeout);
 		}
 		else{
-			return getDepthFirstDLMove(role, state, new MobilityHeuristic(0), actual_time);
+			return getDLAlphaBetaMove(role, state, new MonteCarloHeuristic(4), heuristic_begin_time, submit_timeout);
 		}
 	}
 
@@ -67,7 +69,6 @@ public class MobilityHeuristicFixedDepthPlayer extends BaseDemBoisGamer {
 	@Override
 	public String getName() {
 		// TODO Auto-generated method stub
-		return "MobilityHeuristicFixedDepthPlayer";
+		return "MonteCarloHeuristicPlayer";
 	}
-
 }

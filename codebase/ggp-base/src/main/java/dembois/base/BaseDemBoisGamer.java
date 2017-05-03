@@ -1,3 +1,4 @@
+package dembois.base;
 import java.util.List;
 import java.util.Map;
 
@@ -175,8 +176,6 @@ public abstract class BaseDemBoisGamer extends StateMachineGamer{
 	}
 
 	protected Move getDepthFirstDLMove(Role role, MachineState state, Heuristic heuristic, long timeout) throws MoveDefinitionException, TransitionDefinitionException, GoalDefinitionException{
-		//long actual_time=timeout-3;
-
 		StateMachine machine = getStateMachine();
 		List<Move> actions = machine.getLegalMoves(state, role);
 		Move action = actions.get(0);
