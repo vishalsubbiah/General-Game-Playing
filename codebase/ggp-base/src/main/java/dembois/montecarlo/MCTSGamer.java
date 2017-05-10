@@ -25,7 +25,7 @@ public class MCTSGamer extends BaseHeuristicGamer {
 	@Override
 	public void stateMachineMetaGame(long timeout)
 			throws TransitionDefinitionException, MoveDefinitionException, GoalDefinitionException {
-		mcts = new MCTSHeuristic(getStateMachine(),5,10);
+		mcts = new MCTSHeuristic(getStateMachine(),1,100);
 	}
 
 	@Override

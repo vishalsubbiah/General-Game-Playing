@@ -38,7 +38,7 @@ public class MCTSHeuristic implements Heuristic {
 			root = new Node(null, prevPlayer(role), state, null);
 		}
 		while(System.currentTimeMillis() < timeout){
-			mcts(root, role, machine);
+			mcts(root, role, machine, timeout);
 		}
 		return getBestValue(root, role);
 	}
@@ -53,7 +53,9 @@ public class MCTSHeuristic implements Heuristic {
 			root = new Node(null, prevPlayer(role), state, null);
 		}
 		while(System.currentTimeMillis() < timeout){
-			mcts(root, role, machine);
+			System.out.println("MCTS starting.");
+			mcts(root, role, machine, timeout);
+			System.out.println("MCTS complete.");
 		}
 		return getBestMove(root, role);
 	}
@@ -63,7 +65,7 @@ public class MCTSHeuristic implements Heuristic {
 		Move move = null;
 		for(Node child : node.getChildren()){
 			Move curMove = child.getMove();
-			double curVal = child.getValue() / child.getVisits();
+			double curVal = child.getValue() / Math.max(1, child.getVisits());
 			System.out.println(curMove.toString()+", "+child.getVisits()+", "+curVal+"; "+(int)(uct(child)));
 			if(curVal > best){
 				best = (int) (curVal);
@@ -109,20 +111,26 @@ public class MCTSHeuristic implements Heuristic {
 		return nextPlayerMap.get(role);
 	}
 
-	private void mcts(Node node, Role agentRole, StateMachine machine) throws MoveDefinitionException, TransitionDefinitionException, GoalDefinitionException{
-		Node selectedNode = select(node, machine);
+	private void mcts(Node node, Role agentRole, StateMachine machine, long timeout) throws MoveDefinitionException, TransitionDefinitionException, GoalDefinitionException{
+		Node selectedNode = node;
+		while((selectedNode.getVisits() > 0 && !machine.isTerminal(selectedNode.getState())) && System.currentTimeMillis() < timeout){
+			selectedNode = select(selectedNode, machine);
+		}
+		System.out.println("Selected!");
 		Map<Role,Integer> result;
 		if(machine.isTerminal(selectedNode.getState())){
+			System.out.println("Investigating terminal!");
 			result = simulate(selectedNode, machine);
-			backpropagate(selectedNode, result);
+			System.out.println("Simulation complete!");
+			backpropagate(selectedNode, result, true);
+			System.out.println("Backprop complete!");
 			return;
 		}
 		if(selectedNode.getVisits() == 0){
 			expand(selectedNode, agentRole, machine);
 			result = simulate(selectedNode, machine);
-			backpropagate(selectedNode, result);
-		}else{
-			mcts(selectedNode, agentRole, machine);
+			backpropagate(selectedNode, result, false);
+			return;
 		}
 	}
 
@@ -174,7 +182,8 @@ public class MCTSHeuristic implements Heuristic {
 	private Map<Role,Integer> simulate(Node node, StateMachine machine) throws TransitionDefinitionException, MoveDefinitionException, GoalDefinitionException{
 		MachineState state = node.getState();
 		List<Role> roles = machine.getRoles();
-		if(!node.isMoveMapEmpty()){
+		if(!machine.isTerminal(state) && !node.isMoveMapEmpty()){
+			System.out.println("Filling random moves!");
 			Map<Role, Move> moveMap = node.getMoveMap();
 			Random r = new Random();
 			for(Role role : roles){
@@ -189,30 +198,42 @@ public class MCTSHeuristic implements Heuristic {
 		for(Role r : roles){
 			goalMap.put(r, 0);
 		}
+		System.out.println("Launching charges!");
 		for(int c=0;c<charges;c++){
 			List<Integer> goals;
+			System.out.println("Checking terminality...");
 			if(machine.isTerminal(state)){
+				System.out.println("Terminal!");
 				goals = machine.getGoals(state);
+				System.out.println("Got terminal goals!");
 			}else{
 				goals = machine.getGoals(machine.performDepthCharge(state, new int[1]));
 			}
+			System.out.println("Building map...");
 			for(int i=0;i<roles.size();i++){
 				goalMap.put(roles.get(i), goalMap.get(roles.get(i)) + goals.get(i)/charges);
 			}
+			System.out.println("Map built!");
 		}
 		return goalMap;
 	}
 
-	private void backpropagate(Node node, Map<Role,Integer> goalMap){
+	private void backpropagate(Node node, Map<Role,Integer> goalMap, boolean verbose){
+		if(verbose){
+			System.out.println("Visiting...");
+		}
 		node.visit();
 		node.addValue((double)goalMap.get(node.getPlayer()));
 		if(node.getParent() != null){
-			backpropagate(node.getParent(), goalMap);
+			if(verbose){
+				System.out.println("Passing up!");
+			}
+			backpropagate(node.getParent(), goalMap, verbose);
 		}
 	}
 
 	private double uct(Node node){
-		return node.getValue()/node.getVisits() + this.C * Math.sqrt(Math.log(node.getParent().getVisits()) / node.getVisits());
+		return node.getValue()/Math.max(1, node.getVisits()) + this.C * Math.sqrt(Math.log(node.getParent().getVisits()) / Math.max(node.getVisits(), 1));
 	}
 
 	private static class Node{
