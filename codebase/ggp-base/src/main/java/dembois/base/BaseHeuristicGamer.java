@@ -38,7 +38,7 @@ public abstract class BaseHeuristicGamer extends StateMachineGamer{
 			return getStateMachine().getGoal(state, role);
 		}
 		int score = 0;
-		if(depth>timeout){
+		if(depth>=timeout){
 			return heuristic.getValue(role,state,getStateMachine(),timeout);
 		}
 		depth=(long) (System.currentTimeMillis());
