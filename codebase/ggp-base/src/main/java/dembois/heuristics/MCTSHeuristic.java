@@ -53,9 +53,7 @@ public class MCTSHeuristic implements Heuristic {
 			root = new Node(null, prevPlayer(role), state, null);
 		}
 		while(System.currentTimeMillis() < timeout){
-			System.out.println("MCTS starting.");
 			mcts(root, role, machine, timeout);
-			System.out.println("MCTS complete.");
 		}
 		return getBestMove(root, role);
 	}
@@ -116,20 +114,16 @@ public class MCTSHeuristic implements Heuristic {
 		while((selectedNode.getVisits() > 0 && !machine.isTerminal(selectedNode.getState())) && System.currentTimeMillis() < timeout){
 			selectedNode = select(selectedNode, machine);
 		}
-		System.out.println("Selected!");
 		Map<Role,Integer> result;
 		if(machine.isTerminal(selectedNode.getState())){
-			System.out.println("Investigating terminal!");
 			result = simulate(selectedNode, machine);
-			System.out.println("Simulation complete!");
-			backpropagate(selectedNode, result, true);
-			System.out.println("Backprop complete!");
+			backpropagate(selectedNode, result);
 			return;
 		}
 		if(selectedNode.getVisits() == 0){
 			expand(selectedNode, agentRole, machine);
 			result = simulate(selectedNode, machine);
-			backpropagate(selectedNode, result, false);
+			backpropagate(selectedNode, result);
 			return;
 		}
 	}
@@ -183,7 +177,6 @@ public class MCTSHeuristic implements Heuristic {
 		MachineState state = node.getState();
 		List<Role> roles = machine.getRoles();
 		if(!machine.isTerminal(state) && !node.isMoveMapEmpty()){
-			System.out.println("Filling random moves!");
 			Map<Role, Move> moveMap = node.getMoveMap();
 			Random r = new Random();
 			for(Role role : roles){
@@ -198,37 +191,25 @@ public class MCTSHeuristic implements Heuristic {
 		for(Role r : roles){
 			goalMap.put(r, 0);
 		}
-		System.out.println("Launching charges!");
 		for(int c=0;c<charges;c++){
 			List<Integer> goals;
-			System.out.println("Checking terminality...");
 			if(machine.isTerminal(state)){
-				System.out.println("Terminal!");
 				goals = machine.getGoals(state);
-				System.out.println("Got terminal goals!");
 			}else{
 				goals = machine.getGoals(machine.performDepthCharge(state, new int[1]));
 			}
-			System.out.println("Building map...");
 			for(int i=0;i<roles.size();i++){
 				goalMap.put(roles.get(i), goalMap.get(roles.get(i)) + goals.get(i)/charges);
 			}
-			System.out.println("Map built!");
 		}
 		return goalMap;
 	}
 
-	private void backpropagate(Node node, Map<Role,Integer> goalMap, boolean verbose){
-		if(verbose){
-			System.out.println("Visiting...");
-		}
+	private void backpropagate(Node node, Map<Role,Integer> goalMap){
 		node.visit();
 		node.addValue((double)goalMap.get(node.getPlayer()));
 		if(node.getParent() != null){
-			if(verbose){
-				System.out.println("Passing up!");
-			}
-			backpropagate(node.getParent(), goalMap, verbose);
+			backpropagate(node.getParent(), goalMap);
 		}
 	}
 
