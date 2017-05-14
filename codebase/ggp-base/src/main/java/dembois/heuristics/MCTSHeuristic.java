@@ -38,7 +38,7 @@ public class MCTSHeuristic implements Heuristic {
 			root = new Node(null, prevPlayer(role), state, null);
 		}
 		while(System.currentTimeMillis() < timeout){
-			mcts(root, role, machine);
+			mcts(root, role, machine, timeout);
 		}
 		return getBestValue(root, role);
 	}
@@ -53,7 +53,7 @@ public class MCTSHeuristic implements Heuristic {
 			root = new Node(null, prevPlayer(role), state, null);
 		}
 		while(System.currentTimeMillis() < timeout){
-			mcts(root, role, machine);
+			mcts(root, role, machine, timeout);
 		}
 		return getBestMove(root, role);
 	}
@@ -63,7 +63,7 @@ public class MCTSHeuristic implements Heuristic {
 		Move move = null;
 		for(Node child : node.getChildren()){
 			Move curMove = child.getMove();
-			double curVal = child.getValue() / child.getVisits();
+			double curVal = child.getValue() / Math.max(1, child.getVisits());
 			System.out.println(curMove.toString()+", "+child.getVisits()+", "+curVal+"; "+(int)(uct(child)));
 			if(curVal > best){
 				best = (int) (curVal);
@@ -109,8 +109,11 @@ public class MCTSHeuristic implements Heuristic {
 		return nextPlayerMap.get(role);
 	}
 
-	private void mcts(Node node, Role agentRole, StateMachine machine) throws MoveDefinitionException, TransitionDefinitionException, GoalDefinitionException{
-		Node selectedNode = select(node, machine);
+	private void mcts(Node node, Role agentRole, StateMachine machine, long timeout) throws MoveDefinitionException, TransitionDefinitionException, GoalDefinitionException{
+		Node selectedNode = node;
+		while((selectedNode.getVisits() > 0 && !machine.isTerminal(selectedNode.getState())) && System.currentTimeMillis() < timeout){
+			selectedNode = select(selectedNode, machine);
+		}
 		Map<Role,Integer> result;
 		if(machine.isTerminal(selectedNode.getState())){
 			result = simulate(selectedNode, machine);
@@ -121,8 +124,7 @@ public class MCTSHeuristic implements Heuristic {
 			expand(selectedNode, agentRole, machine);
 			result = simulate(selectedNode, machine);
 			backpropagate(selectedNode, result);
-		}else{
-			mcts(selectedNode, agentRole, machine);
+			return;
 		}
 	}
 
@@ -174,7 +176,7 @@ public class MCTSHeuristic implements Heuristic {
 	private Map<Role,Integer> simulate(Node node, StateMachine machine) throws TransitionDefinitionException, MoveDefinitionException, GoalDefinitionException{
 		MachineState state = node.getState();
 		List<Role> roles = machine.getRoles();
-		if(!node.isMoveMapEmpty()){
+		if(!machine.isTerminal(state) && !node.isMoveMapEmpty()){
 			Map<Role, Move> moveMap = node.getMoveMap();
 			Random r = new Random();
 			for(Role role : roles){
@@ -212,7 +214,7 @@ public class MCTSHeuristic implements Heuristic {
 	}
 
 	private double uct(Node node){
-		return node.getValue()/node.getVisits() + this.C * Math.sqrt(Math.log(node.getParent().getVisits()) / node.getVisits());
+		return node.getValue()/Math.max(1, node.getVisits()) + this.C * Math.sqrt(Math.log(node.getParent().getVisits()) / Math.max(node.getVisits(), 1));
 	}
 
 	private static class Node{
