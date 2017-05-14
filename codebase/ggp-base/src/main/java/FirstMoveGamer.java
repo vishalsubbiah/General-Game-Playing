@@ -12,32 +12,38 @@ import org.ggp.base.util.statemachine.cache.CachedStateMachine;
 import org.ggp.base.util.statemachine.exceptions.GoalDefinitionException;
 import org.ggp.base.util.statemachine.exceptions.MoveDefinitionException;
 import org.ggp.base.util.statemachine.exceptions.TransitionDefinitionException;
-import org.ggp.base.util.statemachine.implementation.prover.ProverStateMachine;
+import org.ggp.base.util.statemachine.implementation.propnet.SamplePropNetStateMachine;
 
 public class FirstMoveGamer extends StateMachineGamer {
 	Player p;
+
 	@Override
 	public StateMachine getInitialStateMachine() {
 		// TODO Auto-generated method stub
-		return new CachedStateMachine(new ProverStateMachine());
+		System.out.println("INITIAL");
+		return new CachedStateMachine(new SamplePropNetStateMachine());
 	}
 
 	@Override
 	public void stateMachineMetaGame(long timeout)
 			throws TransitionDefinitionException, MoveDefinitionException, GoalDefinitionException {
 		// TODO Auto-generated method stub
-
+		System.out.println(getInitialStateMachine().toString());
 	}
 
 	@Override
 	public Move stateMachineSelectMove(long timeout)
 			throws TransitionDefinitionException, MoveDefinitionException, GoalDefinitionException {
 		// TODO Auto-generated method stub
-		StateMachine machine = getStateMachine();
+		System.out.println("0");
+		SamplePropNetStateMachine machine = (SamplePropNetStateMachine) getStateMachine();
+		System.out.println("1");
 		MachineState state= getCurrentState();
+		System.out.println("2");
 		Role role = getRole();
-		List<Move> moves=machine.getLegalMoves(state, role);
-
+		System.out.println("3");
+		List<Move> moves = machine.getLegalMoves(state, role);
+		System.out.println(moves.size());
 		return moves.get(0);
 	}
 

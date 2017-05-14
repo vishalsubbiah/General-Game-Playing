@@ -101,6 +101,11 @@ public abstract class StateMachineGamer extends Gamer
 		return stateMachine;
 	}
 
+//	public SamplePropNetStateMachine getPropMachine()
+//	{
+//		return spsm;
+//	}
+
     /**
      * Cleans up the role, currentState and stateMachine. This should only be
      * used when a match is over, and even then only when you really need to
@@ -142,7 +147,7 @@ public abstract class StateMachineGamer extends Gamer
             // Finally, switch over if everything went well.
             role = newRole;
             currentState = newCurrentState;
-            stateMachine = newStateMachine;
+            stateMachine =  newStateMachine;
         } catch (Exception e) {
             GamerLogger.log("GamePlayer", "Caught an exception while switching state machine!");
             GamerLogger.logStackTrace("GamePlayer", e);
@@ -155,7 +160,7 @@ public abstract class StateMachineGamer extends Gamer
      * arrives at a particular game state.
      */
 	public final void resetStateFromMatch() {
-        stateMachine = getInitialStateMachine();
+        stateMachine =  getInitialStateMachine();
         stateMachine.initialize(getMatch().getGame().getRules());
         currentState = stateMachine.getMachineStateFromSentenceList(getMatch().getMostRecentState());
         role = stateMachine.getRoleFromConstant(getRoleName());
@@ -287,4 +292,5 @@ public abstract class StateMachineGamer extends Gamer
     private Role role;
     private MachineState currentState;
     private StateMachine stateMachine;
+    //private SamplePropNetStateMachine stateMachine;
 }

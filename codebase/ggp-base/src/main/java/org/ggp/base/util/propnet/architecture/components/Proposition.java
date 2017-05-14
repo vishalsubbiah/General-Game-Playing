@@ -13,6 +13,8 @@ public class Proposition extends Component
 	private GdlSentence name;
 	/** The value of the Proposition. */
 	private boolean value;
+	/** The type of the Proposition. */
+	private String type = "";
 
 	/**
 	 * Creates a new Proposition with name <tt>name</tt>.
@@ -70,6 +72,33 @@ public class Proposition extends Component
 	{
 		this.value = value;
 	}
+
+    /**
+     * Setter method, used only for base and input propositions.
+     *
+     * This should only be rarely used; the type of a proposition
+     * is usually constant over its entire lifetime.
+     *
+     * @param value
+     * 				The type of the Proposition.
+     */
+    public void setType(String type)
+    {
+        this.type = type;
+    }
+
+    /**
+     * Getter method, used to return the type of a proposition.
+     *
+     * @return The type of the Proposition.
+     */
+    public String getType(){
+    	if(!type.equals("")) return type;
+    	if((Component)this instanceof Not) return "negation";
+    	if((Component)this instanceof And) return "conjunction";
+    	if((Component)this instanceof Or) return "disjunction";
+    	return "view";
+    }
 
 	/**
 	 * @see org.ggp.base.util.propnet.architecture.Component#toString()

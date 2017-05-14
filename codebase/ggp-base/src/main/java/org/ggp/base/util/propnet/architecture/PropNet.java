@@ -301,6 +301,7 @@ public final class PropNet
 
 			Component component = proposition.getSingleInput();
 			if (component instanceof Transition) {
+				proposition.setType("base");
 				basePropositions.put(proposition.getName(), proposition);
 			}
 		}
@@ -378,6 +379,7 @@ public final class PropNet
 
 			GdlRelation relation = (GdlRelation) proposition.getName();
 			if (relation.getName().getValue().equals("does")) {
+				proposition.setType("input");
 				inputPropositions.put(proposition.getName(), proposition);
 			}
 		}
