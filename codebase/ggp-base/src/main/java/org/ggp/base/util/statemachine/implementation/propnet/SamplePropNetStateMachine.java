@@ -33,6 +33,8 @@ public class SamplePropNetStateMachine extends StateMachine {
     private List<Proposition> ordering;
     /** The player roles */
     private List<Role> roles;
+    /** The initial state, saved upon initialization*/
+    private MachineState initialState;
 
     /**
      * Initializes the PropNetStateMachine. You should compute the topological
@@ -45,42 +47,82 @@ public class SamplePropNetStateMachine extends StateMachine {
             propNet = OptimizingPropNetFactory.create(description);
             roles = propNet.getRoles();
             ordering = getOrdering();
+            initialState = computeInitialState();
+            System.out.println("Finished computeInitialState " + initialState.getContents());
+//            markBases(initialState);
+//            markActions(initialState);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
     }
 
+    private MachineState computeInitialState() {
+    	Set<GdlSentence> contents = new HashSet<GdlSentence>();
+        Proposition INIT = propNet.getInitProposition();
+        System.out.println("computeInitialState: number of outputs for initialProp = " + propNet.getInitProposition().getOutputs().size() );
+        INIT.setValue(true);
+//        for(Component c: propNet.getInitProposition().getOutputs()) {
+//        	System.out.println("computeInitialState: " + c.toString());
+//        	Proposition p = (Proposition) c;
+//        	p.setValue(true);
+//        	contents.add(p.getName());
+//        }
+        contents.add(INIT.getName());
+    	return new MachineState(contents);
+    }
+
+    /*
+     * Given the current state and the base propositions, set the name of the base proposition, and set the value
+     * by
+     */
     private boolean markBases(MachineState state) {
     	Map<GdlSentence, Proposition> baseProps = propNet.getBasePropositions();
+    	Set<GdlSentence> statePropositions = state.getContents();
+
+    	System.out.println("mb1 " + baseProps + " " + baseProps.size());
+    	for(GdlSentence s: baseProps.keySet()) System.out.println("mb2 " + s);
+
+    	System.out.println("mb3 " + statePropositions + " " + statePropositions.size());
+    	for(GdlSentence s: statePropositions) System.out.println("mb4 " + s);
+//    	for(Component c: propNet.getInitProposition().getOutputs()) System.out.println("initcomponent " + c);
 
     	for (Map.Entry<GdlSentence, Proposition> entry : baseProps.entrySet()) {
     		Proposition base = entry.getValue();
     	    base.setName(entry.getKey());
-    	    base.setValue(true);
+    	    System.out.println("mb4 " + entry.getKey() + " " + statePropositions.contains(entry.getKey()));
+    	    base.setValue(statePropositions.contains(entry.getKey()));
     	}
 
+    	System.out.println();
     	return true;
     }
 
     private boolean markActions(MachineState state) {
     	Map<GdlSentence, Proposition> inputProps = propNet.getInputPropositions();
+    	Set<GdlSentence> statePropositions = state.getContents();
 
     	for (Map.Entry<GdlSentence, Proposition> entry : inputProps.entrySet()) {
     		Proposition input = entry.getValue();
     	    input.setName(entry.getKey());
-    	    input.setValue(true);
+    	    input.setValue(statePropositions.contains(entry.getKey()));
     	}
 
     	return true;
     }
 
-    // DONT FORGET TO USE THIS SOMEWHERE
+    // DONT FORGET TO USE THIS
     private boolean clearPropnet() {
     	Map<GdlSentence, Proposition> baseProps = propNet.getBasePropositions();
-
     	for (Map.Entry<GdlSentence, Proposition> entry : baseProps.entrySet()) {
     	    entry.getValue().setValue(false);
     	}
+
+    	Map<GdlSentence, Proposition> inputProps = propNet.getInputPropositions();
+    	for (Map.Entry<GdlSentence, Proposition> entry : inputProps.entrySet()) {
+    	    entry.getValue().setValue(false);
+    	}
+
+    	propNet.getInitProposition().setValue(false);
 
     	return true;
     }
@@ -89,14 +131,19 @@ public class SamplePropNetStateMachine extends StateMachine {
     	String name = p.getType();
     	switch(name) {
     		case "base": case "input":
+    			System.out.println("base/input " + p.getType() + " " + p.getValue());
     			return p.getValue();
     		case "view":
+    			System.out.println("view " + p.getType() + " " + p.getValue());
     			return propmarkp((Proposition)p.getSingleInput());
     		case "negation":
+    			System.out.println("negation " + p.getType() + " " + p.getValue());
     			return propmarkNOT(p);
     		case "conjunction" :
+    			System.out.println("conjunction " + p.getType() + " " + p.getValue());
     			return propmarkAND(p);
     		case "disjunction" :
+    			System.out.println("disjunction " + p.getType() + " " + p.getValue());
     			return propmarkOR(p);
     	}
     	return false;
@@ -128,12 +175,19 @@ public class SamplePropNetStateMachine extends StateMachine {
     private Set<Proposition> propLegals(MachineState state, Role role) throws MoveDefinitionException{
     	markBases(state);
     	Set<Proposition> legals = propNet.getLegalPropositions().get(role);
+    	System.out.println("propLegals " + legals.size());
+    	for(Proposition p: legals) {
+    		System.out.println("propLegals " + p + " " + p.getType() + " " + p.getValue());
+    		System.out.println(p.getInputs() + "\n");
+    	}
+
 
     	Set<Proposition> actions = new HashSet<Proposition>();
     	for(Proposition p: legals) {
     		if(propmarkp(p)) actions.add(p);
     	}
 
+    	clearPropnet();
     	if(actions.size() > 0) return actions;
     	else throw new MoveDefinitionException(state, role);
     }
@@ -148,6 +202,7 @@ public class SamplePropNetStateMachine extends StateMachine {
     		if(propmarkp(base)) nexts.add(base); //might need to use base.source.source instead
     	}
 
+//    	clearPropnet();
     	return nexts;
     }
 
@@ -159,11 +214,13 @@ public class SamplePropNetStateMachine extends StateMachine {
     		if(propmarkp(reward)) { return getGoalValue(reward); }
     	}
 
+//    	clearPropnet();
     	throw new GoalDefinitionException(state, role);
     }
 
     private boolean propTerminal(MachineState state){
     	markBases(state);
+//    	clearPropnet();
     	return propmarkp(propNet.getTerminalProposition());
     }
 
@@ -199,11 +256,7 @@ public class SamplePropNetStateMachine extends StateMachine {
     @Override
     public MachineState getInitialState() {
         // TODO: Compute the initial state.
-    	Set<GdlSentence> contents = new HashSet<GdlSentence>();
-        Proposition INIT = propNet.getInitProposition();
-        INIT.setValue(true);
-        contents.add(INIT.getName());
-        return new MachineState(contents);
+    	return initialState;
     }
 
     /**

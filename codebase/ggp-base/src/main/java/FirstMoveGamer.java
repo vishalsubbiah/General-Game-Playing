@@ -36,15 +36,26 @@ public class FirstMoveGamer extends StateMachineGamer {
 			throws TransitionDefinitionException, MoveDefinitionException, GoalDefinitionException {
 		// TODO Auto-generated method stub
 		System.out.println("0");
-		SamplePropNetStateMachine machine = (SamplePropNetStateMachine) getStateMachine();
+		StateMachine machine = getStateMachine();
 		System.out.println("1");
-		MachineState state= getCurrentState();
+		MachineState state = getCurrentState();
+		System.out.println(state);
 		System.out.println("2");
 		Role role = getRole();
 		System.out.println("3");
 		List<Move> moves = machine.getLegalMoves(state, role);
 		System.out.println(moves.size());
 		return moves.get(0);
+
+//		SamplePropNetStateMachine machine = (SamplePropNetStateMachine) getStateMachine();
+//		System.out.println("1");
+//		MachineState state= getCurrentState();
+//		System.out.println("2");
+//		Role role = getRole();
+//		System.out.println("3");
+//		List<Move> moves = machine.getLegalMoves(state, role);
+//		System.out.println(moves.size());
+//		return moves.get(0);
 	}
 
 	@Override
