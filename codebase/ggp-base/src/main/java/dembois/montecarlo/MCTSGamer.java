@@ -26,9 +26,9 @@ public class MCTSGamer extends BaseHeuristicGamer {
 	public void stateMachineMetaGame(long timeout)
 			throws TransitionDefinitionException, MoveDefinitionException, GoalDefinitionException {
 		mcts = new MCTSHeuristic(getStateMachine(),1,50);
-		long submit_timeout = (long)(timeout - 3*Math.pow(10, 3));
+		long submit_timeout = (long)(timeout - 10*Math.pow(10, 3));
 		StateMachine machine = getStateMachine();
-		MachineState state = getCurrentState();
+		MachineState state = machine.getInitialState();
 		Role role = getRole();
 		mcts.getMove(role, state, machine, submit_timeout);
 	}
@@ -36,7 +36,7 @@ public class MCTSGamer extends BaseHeuristicGamer {
 	@Override
 	public Move stateMachineSelectMove(long timeout)
 			throws TransitionDefinitionException, MoveDefinitionException, GoalDefinitionException {
-		long submit_timeout = (long)(timeout - 3*Math.pow(10,3));
+		long submit_timeout = (long)(timeout - 5*Math.pow(10,3));
 		StateMachine machine = getStateMachine();
 		MachineState state = getCurrentState();
 		Role role = getRole();
