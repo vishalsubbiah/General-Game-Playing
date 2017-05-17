@@ -4,6 +4,7 @@ import org.ggp.base.apps.player.Player;
 import org.ggp.base.player.gamer.exception.GamePreviewException;
 import org.ggp.base.player.gamer.statemachine.StateMachineGamer;
 import org.ggp.base.util.game.Game;
+import org.ggp.base.util.gdl.grammar.GdlSentence;
 import org.ggp.base.util.statemachine.MachineState;
 import org.ggp.base.util.statemachine.Move;
 import org.ggp.base.util.statemachine.Role;
@@ -43,6 +44,10 @@ public class FirstMoveGamer extends StateMachineGamer {
 		System.out.println("2");
 		Role role = getRole();
 		System.out.println("3");
+		for(GdlSentence g: state.getContents()) {
+			System.out.println("beforeMove: " + g); //this will show whether initial state was computed correctly
+			System.out.println();
+		}
 		List<Move> moves = machine.getLegalMoves(state, role);
 		System.out.println(moves.size());
 		return moves.get(0);
