@@ -124,6 +124,7 @@ public final class PropNet
 		this.initProposition = recordInitProposition();
 		this.terminalProposition = recordTerminalProposition();
 		this.legalInputMap = makeLegalInputMap();
+		renderToFile("propnent_graph.dot");
 	}
 
 	public List<Role> getRoles()

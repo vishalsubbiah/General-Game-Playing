@@ -45,12 +45,20 @@ public class SamplePropNetStateMachine extends StateMachine {
     public void initialize(List<Gdl> description) {
         try {
             propNet = OptimizingPropNetFactory.create(description);
+            for(Proposition p: propNet.getPropositions()) System.out.println("ALL PROPS: " + p);
             roles = propNet.getRoles();
             ordering = getOrdering();
             initialState = computeInitialState();
-            System.out.println("Finished computeInitialState " + initialState.getContents());
-//            markBases(initialState);
-//            markActions(initialState);
+            for(GdlSentence g: initialState.getContents()) System.out.println("ALL GDL: " + g);
+            clearPropnet();
+            try {
+				initialState = getNextState(initialState, null);
+				for(GdlSentence g: initialState.getContents()) System.out.println("ALL GDL2: " + g);
+	            roles = propNet.getRoles();
+			} catch (TransitionDefinitionException e) {
+				e.printStackTrace();
+			}
+            System.out.println("Finished computeInitialState " + initialState.getContents() + "\n");
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
@@ -67,19 +75,24 @@ public class SamplePropNetStateMachine extends StateMachine {
 //        	p.setValue(true);
 //        	contents.add(p.getName());
 //        }
+
+        System.out.println(INIT.getValue());
+        for(Component s: INIT.getInputs()) System.out.println("initINPUT: " + s);
+        for(Component s: INIT.getOutputs()) System.out.println("initOUTPUT: " + s);
+        System.out.println(INIT.getType());
+
         contents.add(INIT.getName());
     	return new MachineState(contents);
     }
 
     /*
-     * Given the current state and the base propositions, set the name of the base proposition, and set the value
-     * by
+     * Given the current state and the base propositions, set the name of the base proposition, and set the value.
      */
     private boolean markBases(MachineState state) {
     	Map<GdlSentence, Proposition> baseProps = propNet.getBasePropositions();
     	Set<GdlSentence> statePropositions = state.getContents();
 
-    	System.out.println("mb1 " + baseProps + " " + baseProps.size());
+    	System.out.println("mb1 " + baseProps.size() + " " + baseProps);
     	for(GdlSentence s: baseProps.keySet()) System.out.println("mb2 " + s);
 
     	System.out.println("mb3 " + statePropositions + " " + statePropositions.size());
@@ -88,23 +101,21 @@ public class SamplePropNetStateMachine extends StateMachine {
 
     	for (Map.Entry<GdlSentence, Proposition> entry : baseProps.entrySet()) {
     		Proposition base = entry.getValue();
-    	    base.setName(entry.getKey());
-    	    System.out.println("mb4 " + entry.getKey() + " " + statePropositions.contains(entry.getKey()));
     	    base.setValue(statePropositions.contains(entry.getKey()));
+    	    System.out.println("mb5 " + base.getName() + " " + statePropositions.contains(base.getName()) + " " + base);
     	}
 
     	System.out.println();
     	return true;
     }
 
-    private boolean markActions(MachineState state) {
+    private boolean markActions(List<GdlSentence> moves) {
     	Map<GdlSentence, Proposition> inputProps = propNet.getInputPropositions();
-    	Set<GdlSentence> statePropositions = state.getContents();
 
-    	for (Map.Entry<GdlSentence, Proposition> entry : inputProps.entrySet()) {
-    		Proposition input = entry.getValue();
-    	    input.setName(entry.getKey());
-    	    input.setValue(statePropositions.contains(entry.getKey()));
+    	for(GdlSentence s: moves){
+    		Proposition input = inputProps.get(s);
+    		input.setValue(true);
+    		System.out.println("markActions: " + input);
     	}
 
     	return true;
@@ -122,7 +133,7 @@ public class SamplePropNetStateMachine extends StateMachine {
     	    entry.getValue().setValue(false);
     	}
 
-    	propNet.getInitProposition().setValue(false);
+//    	propNet.getInitProposition().setValue(false);
 
     	return true;
     }
@@ -133,7 +144,7 @@ public class SamplePropNetStateMachine extends StateMachine {
     		case "base": case "input":
     			System.out.println("base/input " + p.getType() + " " + p.getValue());
     			return p.getValue();
-    		case "view":
+    		case "view": // FIND OUT WHAT VIEW SHOULD DO IN THIS CASE
     			System.out.println("view " + p.getType() + " " + p.getValue());
     			return propmarkp((Proposition)p.getSingleInput());
     		case "negation":
@@ -192,18 +203,25 @@ public class SamplePropNetStateMachine extends StateMachine {
     	else throw new MoveDefinitionException(state, role);
     }
 
-    private Set<Proposition> propNexts(MachineState state){
-    	markActions(state);
-    	markBases(state);
-
-    	Map<GdlSentence, Proposition> bases = propNet.getBasePropositions();
-    	Set<Proposition> nexts = new HashSet<Proposition>();
-    	for(Proposition base: bases.values()){
-    		if(propmarkp(base)) nexts.add(base); //might need to use base.source.source instead
+    private MachineState propNextState(MachineState state, List<GdlSentence> moves){
+    	if(moves != null) { //handles the initial state, where no move has been made
+    		markActions(moves);
+    		markBases(state);
     	}
 
+    	Map<GdlSentence, Proposition> bases = propNet.getBasePropositions();
+    	Set<GdlSentence> nextContents = new HashSet<GdlSentence>();
+    	for(Proposition base: bases.values()){
+    		if(propmarkp(base.getSingleInput())) nextContents.add(base.getName()); //might need to use base.source.source instead
+    		System.out.println("propNextState: " + base.getName() + " " + base.getValue());
+    	}
+    	//not propagating correctly
+
+
 //    	clearPropnet();
-    	return nexts;
+    	System.out.println("propNextState: nextContents.size(): == " + nextContents.size());
+    	for(GdlSentence g: nextContents) System.out.println("propNextState gdls:" + g);
+    	return new MachineState(nextContents);
     }
 
     private int propReward(MachineState state, Role role) throws GoalDefinitionException{
@@ -289,15 +307,8 @@ public class SamplePropNetStateMachine extends StateMachine {
     public MachineState getNextState(MachineState state, List<Move> moves)
             throws TransitionDefinitionException {
         // TODO: Compute the next state.
-    	Set<GdlSentence> contents = new HashSet<GdlSentence>();
-        for (Proposition p : propNexts(state))
-        {
-            if (p.getValue())
-            {
-                contents.add(p.getName());
-            }
-        }
-        return new MachineState(contents);
+        if(moves != null) return propNextState(state, toDoes(moves));
+        else return propNextState(state, null);
     }
 
     /**
