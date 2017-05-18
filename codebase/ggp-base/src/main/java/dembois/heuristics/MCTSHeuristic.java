@@ -125,13 +125,13 @@ public class MCTSHeuristic implements Heuristic {
 		Map<Role,Integer> result;
 		if(machine.isTerminal(selectedNode.getState())){
 			result = simulate(selectedNode, machine, timeout);
-			backpropagate(selectedNode, result);
+			backpropagate(selectedNode, result, timeout);
 			return;
 		}
 		if(selectedNode.getVisits() == 0){
 			expand(selectedNode, agentRole, machine);
 			result = simulate(selectedNode, machine, timeout);
-			backpropagate(selectedNode, result);
+			backpropagate(selectedNode, result, timeout);
 			return;
 		}
 	}
@@ -215,9 +215,9 @@ public class MCTSHeuristic implements Heuristic {
 			if(System.currentTimeMillis() >= timeout){
 				break;
 			}
-			for(int i=0;i<roles.size();i++){
-				goalMap.put(roles.get(i), goalMap.get(roles.get(i))/Math.max(chargesSent,1));
-			}
+		}
+		for(int i=0;i<roles.size();i++){
+			goalMap.put(roles.get(i), goalMap.get(roles.get(i))/Math.max(chargesSent,1));
 		}
 		return goalMap;
 	}
@@ -229,11 +229,14 @@ public class MCTSHeuristic implements Heuristic {
         return state;
     }
 
-	private void backpropagate(Node node, Map<Role,Integer> goalMap){
+	private void backpropagate(Node node, Map<Role,Integer> goalMap, long timeout){
+		if(System.currentTimeMillis() > timeout){
+			return;
+		}
 		node.visit();
 		node.addValue((double)goalMap.get(node.getPlayer()));
 		if(node.getParent() != null){
-			backpropagate(node.getParent(), goalMap);
+			backpropagate(node.getParent(), goalMap, timeout);
 		}
 	}
 

@@ -212,7 +212,7 @@ public class SamplePropNetStateMachine extends StateMachine {
     	Map<GdlSentence, Proposition> bases = propNet.getBasePropositions();
     	Set<GdlSentence> nextContents = new HashSet<GdlSentence>();
     	for(Proposition base: bases.values()){
-    		if(propmarkp(base.getSingleInput())) nextContents.add(base.getName()); //might need to use base.source.source instead
+    		//if(propmarkp(base.getSingleInput())) nextContents.add(base.getName()); //might need to use base.source.source instead
     		System.out.println("propNextState: " + base.getName() + " " + base.getValue());
     	}
     	//not propagating correctly
