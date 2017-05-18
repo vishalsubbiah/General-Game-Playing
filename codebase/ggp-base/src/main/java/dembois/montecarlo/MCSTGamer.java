@@ -68,7 +68,7 @@ public class MCSTGamer extends BaseHeuristicGamer {
 	@Override
 	public String getName() {
 		// TODO Auto-generated method stub
-		return "MCSTPlayer";
+		return "DontUsePlayer";
 	}
 
 }
