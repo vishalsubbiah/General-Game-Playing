@@ -20,11 +20,13 @@ public class MCTSHeuristic implements Heuristic {
 	private Map<MachineState, Node> agentNodes;
 	private int charges;
 	private int C;
+	private int chargesLaunched;
 	public MCTSHeuristic(StateMachine machine, int charges, int C){
 		initPlayerMaps(machine);
 		agentNodes = new HashMap<MachineState, Node>();
 		this.charges = charges;
 		this.C = C;
+		this.chargesLaunched = 0;
 	}
 
 	@Override
@@ -36,10 +38,13 @@ public class MCTSHeuristic implements Heuristic {
 		}else{
 			System.out.println("Node not found.");
 			root = new Node(null, prevPlayer(role), state, null);
+			agentNodes.put(state, root);
 		}
 		while(System.currentTimeMillis() < timeout){
 			mcts(root, role, machine, timeout);
 		}
+		System.out.println("Charges launched: "+chargesLaunched);
+		chargesLaunched = 0;
 		return getBestValue(root, role);
 	}
 
@@ -51,10 +56,13 @@ public class MCTSHeuristic implements Heuristic {
 		}else{
 			System.out.println("Node not found.");
 			root = new Node(null, prevPlayer(role), state, null);
+			agentNodes.put(state, root);
 		}
 		while(System.currentTimeMillis() < timeout){
 			mcts(root, role, machine, timeout);
 		}
+		System.out.println("Charges launched: "+chargesLaunched);
+		chargesLaunched = 0;
 		return getBestMove(root, role);
 	}
 
@@ -116,14 +124,14 @@ public class MCTSHeuristic implements Heuristic {
 		}
 		Map<Role,Integer> result;
 		if(machine.isTerminal(selectedNode.getState())){
-			result = simulate(selectedNode, machine);
-			backpropagate(selectedNode, result);
+			result = simulate(selectedNode, machine, timeout);
+			backpropagate(selectedNode, result, timeout);
 			return;
 		}
 		if(selectedNode.getVisits() == 0){
 			expand(selectedNode, agentRole, machine);
-			result = simulate(selectedNode, machine);
-			backpropagate(selectedNode, result);
+			result = simulate(selectedNode, machine, timeout);
+			backpropagate(selectedNode, result, timeout);
 			return;
 		}
 	}
@@ -173,7 +181,7 @@ public class MCTSHeuristic implements Heuristic {
 		}
 	}
 
-	private Map<Role,Integer> simulate(Node node, StateMachine machine) throws TransitionDefinitionException, MoveDefinitionException, GoalDefinitionException{
+	private Map<Role,Integer> simulate(Node node, StateMachine machine, long timeout) throws TransitionDefinitionException, MoveDefinitionException, GoalDefinitionException{
 		MachineState state = node.getState();
 		List<Role> roles = machine.getRoles();
 		if(!machine.isTerminal(state) && !node.isMoveMapEmpty()){
@@ -191,25 +199,44 @@ public class MCTSHeuristic implements Heuristic {
 		for(Role r : roles){
 			goalMap.put(r, 0);
 		}
+		int chargesSent = 0;
 		for(int c=0;c<charges;c++){
 			List<Integer> goals;
+			chargesLaunched += 1;
 			if(machine.isTerminal(state)){
 				goals = machine.getGoals(state);
 			}else{
-				goals = machine.getGoals(machine.performDepthCharge(state, new int[1]));
+				goals = machine.getGoals(performDepthCharge(machine, state, timeout));
 			}
 			for(int i=0;i<roles.size();i++){
-				goalMap.put(roles.get(i), goalMap.get(roles.get(i)) + goals.get(i)/charges);
+				goalMap.put(roles.get(i), goalMap.get(roles.get(i)) + goals.get(i));
 			}
+			chargesSent += 1;
+			if(System.currentTimeMillis() >= timeout){
+				break;
+			}
+		}
+		for(int i=0;i<roles.size();i++){
+			goalMap.put(roles.get(i), goalMap.get(roles.get(i))/Math.max(chargesSent,1));
 		}
 		return goalMap;
 	}
 
-	private void backpropagate(Node node, Map<Role,Integer> goalMap){
+	public MachineState performDepthCharge(StateMachine machine, MachineState state, long timeout) throws TransitionDefinitionException, MoveDefinitionException {
+        while(!machine.isTerminal(state) && System.currentTimeMillis() < timeout) {
+            state = machine.getNextStateDestructively(state, machine.getRandomJointMove(state));
+        }
+        return state;
+    }
+
+	private void backpropagate(Node node, Map<Role,Integer> goalMap, long timeout){
+		if(System.currentTimeMillis() > timeout){
+			return;
+		}
 		node.visit();
 		node.addValue((double)goalMap.get(node.getPlayer()));
 		if(node.getParent() != null){
-			backpropagate(node.getParent(), goalMap);
+			backpropagate(node.getParent(), goalMap, timeout);
 		}
 	}
 
