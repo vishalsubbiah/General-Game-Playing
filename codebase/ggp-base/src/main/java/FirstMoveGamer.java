@@ -21,7 +21,7 @@ public class FirstMoveGamer extends StateMachineGamer {
 	@Override
 	public StateMachine getInitialStateMachine() {
 		// TODO Auto-generated method stub
-		System.out.println("INITIAL");
+		System.out.println("\n\n\n\nGET_INITIAL_STATE_MACHINE");
 		return new CachedStateMachine(new SamplePropNetStateMachine());
 	}
 
@@ -29,27 +29,24 @@ public class FirstMoveGamer extends StateMachineGamer {
 	public void stateMachineMetaGame(long timeout)
 			throws TransitionDefinitionException, MoveDefinitionException, GoalDefinitionException {
 		// TODO Auto-generated method stub
-		System.out.println(getInitialStateMachine().toString());
-	}
+		System.out.println("\n\n\n\nSTATE_MACHINE_META_GAME");
+		}
 
 	@Override
 	public Move stateMachineSelectMove(long timeout)
 			throws TransitionDefinitionException, MoveDefinitionException, GoalDefinitionException {
 		// TODO Auto-generated method stub
-		System.out.println("0");
+		System.out.println("\n\n\n\nSTATE_MACHINE_SELECT_MOVE");
 		StateMachine machine = getStateMachine();
-		System.out.println("1");
 		MachineState state = getCurrentState();
-		System.out.println(state);
-		System.out.println("2");
 		Role role = getRole();
-		System.out.println("3");
 		for(GdlSentence g: state.getContents()) {
-			System.out.println("beforeMove: " + g); //this will show whether initial state was computed correctly
-			System.out.println();
+			System.out.println("STATE_MACHINE_SELECT_MOVE state gdl: " + g); //this will show whether initial state was computed correctly
 		}
 		List<Move> moves = machine.getLegalMoves(state, role);
-		System.out.println(moves.size());
+//		try { Thread.sleep(10000); } catch(InterruptedException ex) { }
+		System.out.println("STATE_MACHINE_SELECT_MOVE: MOVES FOUND == " + moves.size());
+		System.out.println("STATE_MACHINE_SELECT_MOVE: MOVE CHOSEN == " + moves.get(0));
 		return moves.get(0);
 
 //		SamplePropNetStateMachine machine = (SamplePropNetStateMachine) getStateMachine();

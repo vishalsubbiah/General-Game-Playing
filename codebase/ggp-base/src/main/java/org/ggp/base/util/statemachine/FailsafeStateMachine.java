@@ -167,6 +167,7 @@ public class FailsafeStateMachine extends StateMachine
 
     @Override
     public List<Move> getLegalMoves(MachineState state, Role role) throws MoveDefinitionException {
+    	System.out.println("FAILSAFE STATE MACHINE");
         if(theBackingMachine == null)
             return null;
 

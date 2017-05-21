@@ -88,14 +88,20 @@ public final class CachedStateMachine extends StateMachine
     @Override
     public List<Move> getLegalMoves(MachineState state, Role role) throws MoveDefinitionException
     {
+    	System.out.println("CACHED STATE MACHINE");
         Entry entry = getEntry(state);
+        System.out.println(state);
+        System.out.println(entry);
         synchronized (entry)
         {
+        	System.out.println("Inside synchro");
             if (!entry.moves.containsKey(role))
             {
+            	System.out.println("Contains role");
                 entry.moves.put(role, ImmutableList.copyOf(backingStateMachine.getLegalMoves(state, role)));
             }
 
+            System.out.println(entry.moves);
             return entry.moves.get(role);
         }
     }

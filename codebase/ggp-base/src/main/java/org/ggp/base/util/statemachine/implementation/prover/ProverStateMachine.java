@@ -98,6 +98,7 @@ public class ProverStateMachine extends StateMachine
     @Override
     public List<Move> getLegalMoves(MachineState state, Role role) throws MoveDefinitionException
     {
+    	System.out.println("PROVER STATE MACHINE");
         Set<GdlSentence> results = prover.askAll(ProverQueryBuilder.getLegalQuery(role), ProverQueryBuilder.getContext(state));
 
         if (results.size() == 0)
