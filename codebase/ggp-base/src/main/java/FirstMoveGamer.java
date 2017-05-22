@@ -45,7 +45,7 @@ public class FirstMoveGamer extends StateMachineGamer {
 		}
 		List<Move> moves = machine.getLegalMoves(state, role);
 //		try { Thread.sleep(10000); } catch(InterruptedException ex) { }
-		System.out.println("STATE_MACHINE_SELECT_MOVE: MOVES FOUND == " + moves.size());
+		System.out.println("STATE_MACHINE_SELECT_MOVE: MOVES FOUND == " + moves.size() + moves);
 		System.out.println("STATE_MACHINE_SELECT_MOVE: MOVE CHOSEN == " + moves.get(0));
 		return moves.get(0);
 
