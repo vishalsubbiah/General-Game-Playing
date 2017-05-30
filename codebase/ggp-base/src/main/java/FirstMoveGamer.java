@@ -4,7 +4,6 @@ import org.ggp.base.apps.player.Player;
 import org.ggp.base.player.gamer.exception.GamePreviewException;
 import org.ggp.base.player.gamer.statemachine.StateMachineGamer;
 import org.ggp.base.util.game.Game;
-import org.ggp.base.util.gdl.grammar.GdlSentence;
 import org.ggp.base.util.statemachine.MachineState;
 import org.ggp.base.util.statemachine.Move;
 import org.ggp.base.util.statemachine.Role;
@@ -29,20 +28,22 @@ public class FirstMoveGamer extends StateMachineGamer {
 	public void stateMachineMetaGame(long timeout)
 			throws TransitionDefinitionException, MoveDefinitionException, GoalDefinitionException {
 		// TODO Auto-generated method stub
-		System.out.println("\n\n\n\nSTATE_MACHINE_META_GAME");
 		}
 
 	@Override
 	public Move stateMachineSelectMove(long timeout)
 			throws TransitionDefinitionException, MoveDefinitionException, GoalDefinitionException {
 		// TODO Auto-generated method stub
+
 		System.out.println("\n\n\n\nSTATE_MACHINE_SELECT_MOVE");
 		StateMachine machine = getStateMachine();
 		MachineState state = getCurrentState();
 		Role role = getRole();
-		for(GdlSentence g: state.getContents()) {
-			System.out.println("STATE_MACHINE_SELECT_MOVE state gdl: " + g); //this will show whether initial state was computed correctly
-		}
+
+//		for(GdlSentence g: state.getContents()) {
+//			System.out.println("STATE_MACHINE_SELECT_MOVE state gdl: " + g);
+//		}
+
 		List<Move> moves = machine.getLegalMoves(state, role);
 //		try { Thread.sleep(10000); } catch(InterruptedException ex) { }
 		System.out.println("STATE_MACHINE_SELECT_MOVE: MOVES FOUND == " + moves.size() + moves);

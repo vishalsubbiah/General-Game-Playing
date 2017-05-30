@@ -222,7 +222,6 @@ public abstract class StateMachineGamer extends Gamer
 	@Override
 	public final GdlTerm selectMove(long timeout) throws MoveSelectionException
 	{
-		System.out.println("STATEMACHINEGAMER SELECT MOVE");
 		try
 		{
 			stateMachine.doPerMoveWork();
@@ -236,8 +235,6 @@ public abstract class StateMachineGamer extends Gamer
 					moves.add(stateMachine.getMoveFromTerm(sentence));
 				}
 
-				System.out.println("SELECT MOVES moves: " + moves);
-				for(Move m: moves) System.out.println(m);
 				currentState = stateMachine.getNextState(currentState, moves);
 				getMatch().appendState(currentState.getContents());
 			}

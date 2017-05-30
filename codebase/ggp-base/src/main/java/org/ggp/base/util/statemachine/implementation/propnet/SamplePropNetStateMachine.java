@@ -41,7 +41,11 @@ public class SamplePropNetStateMachine extends StateMachine {
     /** The initial state, saved upon initialization*/
     private MachineState initialState;
 
-    private boolean computeInitialStateDebug = true;
+    private final boolean debugComputeInitialState = true;
+    private final boolean debugMarking = true;
+    private final boolean debugPropmark = false;
+    private final boolean debugComputation = true;
+
 
     /**
      * Initializes the PropNetStateMachine. You should compute the topological
@@ -54,151 +58,145 @@ public class SamplePropNetStateMachine extends StateMachine {
             propNet = OptimizingPropNetFactory.create(description);
             roles = propNet.getRoles();
             ordering = getOrdering();
-            initialState = computeInitialState();
-            for(GdlSentence g: initialState.getContents()) System.out.println("BEFORE INIT GDL: " + g);
-            try {
-				initialState = getNextState(initialState, null);
-				for(GdlSentence g: initialState.getContents()) System.out.println("AFTER INIT GDL: " + g + "\n\n\n");
-			} catch (TransitionDefinitionException e) {
-				e.printStackTrace();
-			}
+            computeInitialState();
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private MachineState computeInitialState() {
+    private void computeInitialState() {
     	Set<GdlSentence> contents = new HashSet<GdlSentence>();
     	Proposition init = propNet.getInitProposition();
         init.setValue(true);
         contents.add(init.getName());
-
-        if(computeInitialStateDebug){
+        if(debugComputeInitialState){
         	for(Proposition p: propNet.getPropositions()) System.out.println("ALL PROPS: " + p);
-        	System.out.println("computeInitialState: type of init proposition: " + init.getType());
         	System.out.println("computeInitialState: number of outputs for initialProp = " + propNet.getInitProposition().getOutputs().size());
-        	System.out.println(init.getValue());
+        	System.out.println("computeInitialState: value of init = " + init.getValue());
         	System.out.println("computeInitialState: printing all init inputs");
-        	for(Component c: init.getInputs()) System.out.println("	initINPUT: " + c);
+        	for(Component c: init.getInputs()) System.out.println("\tINPUT: " + c);
         	System.out.println("computeInitialState: printing all init outputs");
-        	for(Component c: init.getOutputs()) System.out.println("	initOUTPUT: " + c);
+        	for(Component c: init.getOutputs()) System.out.println("\tOUTPUT: " + c);
         }
 
-    	return new MachineState(contents);
+        initialState = new MachineState(contents);
+        if(debugComputeInitialState) {
+        	System.out.println("computeInitialState: printing the gdl of the state with only the init proposition");
+        	for(GdlSentence g: initialState.getContents()) System.out.println("\t" + g);
+        }
+
+        try {
+			initialState = getNextState(initialState, null);
+		} catch (TransitionDefinitionException e) {
+			e.printStackTrace();
+		}
+		if(debugComputeInitialState) {
+			System.out.println("computeInitialState: printing the gdl of the state after propagating from only init");
+			for(GdlSentence g: initialState.getContents()) System.out.println("\t" + g);
+		}
+
+		// Important to set initial proposition to false here, our initial state has already propagated once after init was set to true.
+        init.setValue(false);
     }
 
     /*
      * Given the current state and the base propositions, set the name of the base proposition, and set the value.
      */
     private boolean markBases(MachineState state) {
-    	Map<GdlSentence, Proposition> baseProps = propNet.getBasePropositions();
-    	Set<GdlSentence> statePropositions = state.getContents();
+    	Map<GdlSentence, Proposition> basesMap = propNet.getBasePropositions();
+    	Set<GdlSentence> currentState = state.getContents();
 
-//    	System.out.println("mb1 " + baseProps.size() + " " + baseProps);
-//    	for(GdlSentence s: baseProps.keySet()) System.out.println("mb2 " + s);
-
-    	System.out.println("mb activate: " + statePropositions + " " + statePropositions.size());
-//    	for(GdlSentence s: statePropositions) System.out.println("mb4 " + s);
-
-    	for(GdlSentence s: statePropositions) {
-    		Proposition base = baseProps.get(s);
-    		System.out.println("mb before 	" + baseProps.get(s).getValue() + " " + baseProps.get(s).getName() + " " + base);
+    	if(debugMarking) System.out.println("MB basesMap: \r\tsize:" + basesMap.size() + "\r\tcontents:" + basesMap);
+    	for(GdlSentence s: currentState) {
+    		Proposition base = basesMap.get(s);
     		base.setValue(true);
-    	    System.out.println("mb after  	" + baseProps.get(s).getValue() + " " + baseProps.get(s).getName() + " " + base);
+    		if(debugMarking) System.out.println("MB marked true: " + basesMap.get(s).getValue() + " " + basesMap.get(s).getName() + " " + base);
     	}
 
-    	System.out.println();
+//    	for(GdlSentence g: propNet.getBasePropositions().keySet()){
+//    		System.out.println(g);
+//    		propNet.getBasePropositions().get(g).setValue(true);
+//    	}
+
+    	if(debugMarking) System.out.println();
     	return true;
     }
 
     private boolean markActions(List<GdlSentence> moves) {
-    	Map<GdlSentence, Proposition> inputProps = propNet.getInputPropositions();
+    	Map<GdlSentence, Proposition> inputsMap = propNet.getInputPropositions();
 
-    	System.out.println("ma activate: " + inputProps + " " + inputProps.size());
+    	if(debugMarking) System.out.println("MA inputsMap: \r\tsize:" + inputsMap.size() + "\r\tcontents:" + inputsMap);
     	for(GdlSentence s: moves){
-    		Proposition input = inputProps.get(s);
-    		System.out.println("ma before	" + inputProps.get(s).getValue() + " " + inputProps.get(s).getName() + " " + input);
+    		Proposition input = inputsMap.get(s);
     		input.setValue(true);
-    		System.out.println("ma after	" + inputProps.get(s).getValue() + " " + inputProps.get(s).getName() + " " + input);
+    		if(debugMarking) System.out.println("MA marked true: " + inputsMap.get(s).getValue() + " " + inputsMap.get(s).getName() + " " + input);
     	}
 
+    	if(debugMarking) System.out.println();
     	return true;
     }
 
     private boolean clearPropnet() {
-    	System.out.println("CLEARING PROPNET");
+    	if(debugMarking) System.out.println("START CLEAR");
+
     	Map<GdlSentence, Proposition> baseProps = propNet.getBasePropositions();
     	for (Map.Entry<GdlSentence, Proposition> entry : baseProps.entrySet()) {
-    		System.out.println(entry.getKey() + " " + entry.getValue() + entry.getValue().getValue());
+    		if(!debugMarking) System.out.println(entry.getKey() + " " + entry.getValue() + entry.getValue().getValue());
     	    entry.getValue().setValue(false);
-    	    System.out.println(entry.getKey() + " " + entry.getValue() + entry.getValue().getValue());
+    	    if(!debugMarking) System.out.println(entry.getKey() + " " + entry.getValue() + entry.getValue().getValue());
     	}
 
-//    	Map<GdlSentence, Proposition> inputProps = propNet.getInputPropositions();
-//    	for (Map.Entry<GdlSentence, Proposition> entry : inputProps.entrySet()) {
-//    	    entry.getValue().setValue(false);
-//    	}
+    	Map<GdlSentence, Proposition> inputProps = propNet.getInputPropositions();
+    	for (Map.Entry<GdlSentence, Proposition> entry : inputProps.entrySet()) {
+    		if(!debugMarking) System.out.println(entry.getKey() + " " + entry.getValue() + entry.getValue().getValue());
+    	    entry.getValue().setValue(false);
+    	    if(!debugMarking) System.out.println(entry.getKey() + " " + entry.getValue() + entry.getValue().getValue());
+    	}
 
-//    	propNet.getInitProposition().setValue(false);
-    	System.out.println("CLEARED PROPNET");
+    	if(debugMarking) System.out.println("END CLEAR");
     	return true;
     }
 
     private boolean propmarkp(Component c) {
     	if(c instanceof Transition) {
-    		System.out.println("propmarkp: transition" + c + c.getValue());
-    		return propmarkp(c.getSingleInput());
+    		if(debugPropmark) System.out.println("propmarkp: transition" + c + c.getValue());
+//    		return propmarkp(c.getSingleInput());
+    		return c.getValue();
     	}
 
     	if(c instanceof And) {
-    		System.out.println("propmarkp: and" + c + c.getValue());
+    		if(debugPropmark) System.out.println("propmarkp: and" + c + c.getValue());
     		return propmarkAND(c);
     	}
 
     	if(c instanceof Or) {
-    		System.out.println("propmarkp: or" + c + c.getValue());
+    		if(debugPropmark)System.out.println("propmarkp: or" + c + c.getValue());
     		return propmarkOR(c);
     	}
 
     	if(c instanceof Not) {
-    		System.out.println("propmarkp: not" + c + c.getValue());
+    		if(debugPropmark)System.out.println("propmarkp: not" + c + c.getValue());
     		return propmarkNOT(c);
     	}
-
+    	// work here next distinguishing input, base (base and input treated the same), and anon
     	if(c instanceof Proposition) {
-    		System.out.println("propmarkp: proposition" + c + c.getValue());
-    		System.out.println(((Proposition) c).getName().toString());
-    		if(((Proposition) c).getName().toString().equals("anon")) {
-    			System.out.println("anon");
-    			return propmarkp(c.getSingleInput());
-    		} else return c.getValue();
+    		if(propNet.getBasePropositions().containsValue(c) || propNet.getInputPropositions().containsValue(c) || c.getInputs().size() == 0) return c.getValue();
+    		else return propmarkp(c.getSingleInput());
+//    		if(debugPropmark) System.out.println("propmarkp: proposition" + c + c.getValue());
+////    		if(debugPropmark) System.out.println(((Proposition) c).getName().toString());
+//    		if(((Proposition) c).getName().toString().equals("anon")) {
+//    			if(debugPropmark)System.out.println("ANON: " + c.getValue() + " " + c);
+//    			return propmarkp(c.getSingleInput());
+//    		} else return c.getValue();
     	}
 
     	if(c instanceof Constant) {
-    		System.out.println("propmarkp: constant" + c + c.getValue());
+    		if(debugPropmark) System.out.println("propmarkp: constant" + c + c.getValue());
     		return c.getValue();
     	}
 
+    	// This might not be necessary, have it here in case I was not catching all cases of components
     	System.out.println("ERROR IN PROPMARK FOR: " + c);
-
-//    	String name = p.getType();
-//    	switch(name) {
-//    		case "base": case "input":
-//    			System.out.println("base/input " + p.getType() + " " + p.getValue());
-//    			return p.getValue();
-//    		case "view": // FIND OUT WHAT VIEW SHOULD DO IN THIS CASE
-//    			System.out.println("view " + p.getType() + " " + p.getValue());
-//    			return propmarkp((Proposition)p.getSingleInput());
-//    		case "negation":
-//    			System.out.println("negation " + p.getType() + " " + p.getValue());
-//    			return propmarkNOT(p);
-//    		case "conjunction" :
-//    			System.out.println("conjunction " + p.getType() + " " + p.getValue());
-//    			return propmarkAND(p);
-//    		case "disjunction" :
-//    			System.out.println("disjunction " + p.getType() + " " + p.getValue());
-//    			return propmarkOR(p);
-//    	}
     	return false;
     }
 
@@ -222,43 +220,66 @@ public class SamplePropNetStateMachine extends StateMachine {
     	return false;
     }
 
-
     private Set<Proposition> propLegals(MachineState state, Role role) throws MoveDefinitionException{
-    	System.out.println("\nInside propLegals");
+    	if(debugComputation) System.out.println("\nPROP_LEGALS()");
     	markBases(state);
 
-    	Set<Proposition> legals = propNet.getLegalPropositions().get(role);
-    	System.out.println("propLegals: legals.sie() == " + legals.size());
-
-    	Set<Proposition> actions = new HashSet<Proposition>();
-    	for(Proposition p: legals) {
-    		System.out.println("propLegals " + p + " " + p.getType() + " " + p.getValue());
-    		System.out.println("propLegals inputs:  " + p.getInputs());
-    		if(propmarkp(p.getSingleInput())) actions.add(p);
-    		System.out.println();
+    	Set<Proposition> legalProps = propNet.getLegalPropositions().get(role);
+    	if(debugComputation) {
+    		System.out.println("\tPrinting all (" + legalProps.size()  + ") legal propositions: ");
+        	for(Proposition p: legalProps) System.out.println("\t\t value = " + p.getValue() + "| contents = " + p);
     	}
 
+    	Set<Proposition> actions = new HashSet<Proposition>();
+    	for(Proposition p: legalProps) {
+    		if(propmarkp(p.getSingleInput())) actions.add(p);
+    	}
+    	if(debugComputation) {
+    		System.out.println("\tPrinting all (" + actions.size()  + ") choosable actions: ");
+        	for(Proposition p: actions) System.out.println("\t\t value = " + p.getValue() + "| contents = " + p);
+    	}
+
+    	//clearPropnet();
     	if(actions.size() > 0) return actions;
     	else throw new MoveDefinitionException(state, role);
     }
 
-    private MachineState propNextState(MachineState state, List<Move> moves){ //HERE
-    	System.out.println("\nInside propNextState");
-    	Set<GdlSentence> nextState = new HashSet<GdlSentence>();
+    private MachineState propNextState(MachineState state, List<Move> moves){
+    	if(debugComputation) System.out.println("\nPROP_NEXT_STATE()");
     	if(moves != null){
     		markActions(toDoes(moves));
     	    markBases(state);
     	}
 
-    	Map<GdlSentence, Proposition> bases = propNet.getBasePropositions();
-    	for(Proposition base: bases.values()){
-    		if(propmarkp(base.getSingleInput())){ nextState.add(base.getName());}
-    		System.out.println("propNextState: " + base.getName() + " " + base.getValue() + " " + base.getSingleInput());
+    	Map<GdlSentence, Proposition> baseProps = propNet.getBasePropositions();
+    	if(debugComputation) {
+    		System.out.println("\tPrinting all base propositions: ");
+    		for(GdlSentence s: baseProps.keySet()) System.out.println("\t\tbase: value = "+ baseProps.get(s).getValue() + " | " + s + " " + baseProps.get(s));
+    		System.out.println("\tPrinting contents of current state: ");
+    		for(GdlSentence s: state.getContents()) System.out.println("\t\tstate gdl: " + s + " " + baseProps.get(s));
     	}
 
-    	System.out.println("propNextState: nextState.size(): == " + nextState.size());
-    	for(GdlSentence g: nextState) System.out.println("propNextState gdls:" + g);
-    	//clearpropnet HERE!
+    	Set<GdlSentence> nextState = new HashSet<GdlSentence>();
+    	for(Proposition base: baseProps.values()){
+    		if(propmarkp(base.getSingleInput().getSingleInput())){
+    			nextState.add(base.getName());
+    			if(!debugComputation) System.out.println("\tadded to next state: " + base.getName() + " " + base.getValue() + " " + base.getSingleInput());
+    		} else {
+    			if(!debugComputation) System.out.println("\tdid not add: " + base.getName() + " " + base.getValue() + " " + base.getSingleInput());
+    		}
+    	}
+//    	for(Proposition base: baseProps.values()){
+//    		if(propmarkp(base.getSingleInput())){
+//    			nextState.add(base.getName());
+//    			if(debugComputation) System.out.println("\tadded to next state: " + base.getName() + " " + base.getValue() + " " + base.getSingleInput());
+//    		}
+//    	}
+
+
+    	if(debugComputation) {
+    		System.out.println("\tPrinting all (" + nextState.size()  + ") gdl in next state: ");
+        	for(GdlSentence g: nextState) System.out.println("\t\tnextstateGDL: " + g);
+    	}
     	clearPropnet();
     	return new MachineState(nextState);
     }
@@ -268,7 +289,6 @@ public class SamplePropNetStateMachine extends StateMachine {
     	markBases(state);
     	Set<Proposition> rewards = propNet.getGoalPropositions().get(role);
     	for(Proposition r: rewards) System.out.println("propReward " + r);
-
 
     	for(Proposition reward: rewards) {
     		if(propmarkp(reward.getSingleInput())) {
@@ -280,7 +300,7 @@ public class SamplePropNetStateMachine extends StateMachine {
     }
 
     private boolean propTerminal(MachineState state){
-    	System.out.println("\nInside propTerminal");
+    	System.out.println("\nPROP_TERMINAL()");
     	markBases(state);
     	return propmarkp(propNet.getTerminalProposition().getSingleInput());
     }
@@ -291,7 +311,6 @@ public class SamplePropNetStateMachine extends StateMachine {
      */
     @Override
     public boolean isTerminal(MachineState state) {
-        // TODO: Compute whether the MachineState is terminal.
         return propTerminal(state);
     }
 
@@ -305,7 +324,6 @@ public class SamplePropNetStateMachine extends StateMachine {
     @Override
     public int getGoal(MachineState state, Role role)
             throws GoalDefinitionException {
-        // TODO: Compute the goal for role in state.
     	return propReward(state, role);
     }
 
@@ -316,7 +334,6 @@ public class SamplePropNetStateMachine extends StateMachine {
      */
     @Override
     public MachineState getInitialState() {
-        // TODO: Compute the initial state.
     	return initialState;
     }
 
@@ -337,10 +354,7 @@ public class SamplePropNetStateMachine extends StateMachine {
     public List<Move> getLegalMoves(MachineState state, Role role)
             throws MoveDefinitionException {
         List<Move> moves = new ArrayList<Move>();
-        System.out.println("before get move from proposition");
         for(Proposition p: propLegals(state, role)) { moves.add(getMoveFromProposition(p)); }
-        System.out.println(moves.size());
-//        clearPropnet();
         return moves;
     }
 
@@ -350,10 +364,7 @@ public class SamplePropNetStateMachine extends StateMachine {
     @Override
     public MachineState getNextState(MachineState state, List<Move> moves)
             throws TransitionDefinitionException {
-        // TODO: Compute the next state.
-    	MachineState nextState= propNextState(state, moves);
-
-//        clearPropnet();
+    	MachineState nextState = propNextState(state, moves);
         return nextState;
     }
 
