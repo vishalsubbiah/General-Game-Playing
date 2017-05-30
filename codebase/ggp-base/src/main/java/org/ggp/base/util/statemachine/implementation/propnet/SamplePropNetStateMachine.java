@@ -41,10 +41,10 @@ public class SamplePropNetStateMachine extends StateMachine {
     /** The initial state, saved upon initialization*/
     private MachineState initialState;
 
-    private final boolean debugComputeInitialState = true;
-    private final boolean debugMarking = true;
+    private final boolean debugComputeInitialState = false;
+    private final boolean debugMarking = false;
     private final boolean debugPropmark = false;
-    private final boolean debugComputation = true;
+    private final boolean debugComputation = false;
 
 
     /**
@@ -59,6 +59,7 @@ public class SamplePropNetStateMachine extends StateMachine {
             roles = propNet.getRoles();
             ordering = getOrdering();
             computeInitialState();
+            System.out.println("propnet built");
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
@@ -141,16 +142,16 @@ public class SamplePropNetStateMachine extends StateMachine {
 
     	Map<GdlSentence, Proposition> baseProps = propNet.getBasePropositions();
     	for (Map.Entry<GdlSentence, Proposition> entry : baseProps.entrySet()) {
-    		if(!debugMarking) System.out.println(entry.getKey() + " " + entry.getValue() + entry.getValue().getValue());
+    		if(debugMarking) System.out.println(entry.getKey() + " " + entry.getValue() + entry.getValue().getValue());
     	    entry.getValue().setValue(false);
-    	    if(!debugMarking) System.out.println(entry.getKey() + " " + entry.getValue() + entry.getValue().getValue());
+    	    if(debugMarking) System.out.println(entry.getKey() + " " + entry.getValue() + entry.getValue().getValue());
     	}
 
     	Map<GdlSentence, Proposition> inputProps = propNet.getInputPropositions();
     	for (Map.Entry<GdlSentence, Proposition> entry : inputProps.entrySet()) {
-    		if(!debugMarking) System.out.println(entry.getKey() + " " + entry.getValue() + entry.getValue().getValue());
+    		if(debugMarking) System.out.println(entry.getKey() + " " + entry.getValue() + entry.getValue().getValue());
     	    entry.getValue().setValue(false);
-    	    if(!debugMarking) System.out.println(entry.getKey() + " " + entry.getValue() + entry.getValue().getValue());
+    	    if(debugMarking) System.out.println(entry.getKey() + " " + entry.getValue() + entry.getValue().getValue());
     	}
 
     	if(debugMarking) System.out.println("END CLEAR");
@@ -239,7 +240,7 @@ public class SamplePropNetStateMachine extends StateMachine {
         	for(Proposition p: actions) System.out.println("\t\t value = " + p.getValue() + "| contents = " + p);
     	}
 
-    	//clearPropnet();
+    	clearPropnet();
     	if(actions.size() > 0) return actions;
     	else throw new MoveDefinitionException(state, role);
     }
@@ -263,9 +264,9 @@ public class SamplePropNetStateMachine extends StateMachine {
     	for(Proposition base: baseProps.values()){
     		if(propmarkp(base.getSingleInput().getSingleInput())){
     			nextState.add(base.getName());
-    			if(!debugComputation) System.out.println("\tadded to next state: " + base.getName() + " " + base.getValue() + " " + base.getSingleInput());
+    			if(debugComputation) System.out.println("\tadded to next state: " + base.getName() + " " + base.getValue() + " " + base.getSingleInput());
     		} else {
-    			if(!debugComputation) System.out.println("\tdid not add: " + base.getName() + " " + base.getValue() + " " + base.getSingleInput());
+    			if(debugComputation) System.out.println("\tdid not add: " + base.getName() + " " + base.getValue() + " " + base.getSingleInput());
     		}
     	}
 //    	for(Proposition base: baseProps.values()){
@@ -285,14 +286,15 @@ public class SamplePropNetStateMachine extends StateMachine {
     }
 
     private int propReward(MachineState state, Role role) throws GoalDefinitionException{
-    	System.out.println("\nInside propReward");
+//    	System.out.println("\nInside propReward");
     	markBases(state);
     	Set<Proposition> rewards = propNet.getGoalPropositions().get(role);
-    	for(Proposition r: rewards) System.out.println("propReward " + r);
+//    	for(Proposition r: rewards) System.out.println("propReward " + r);
 
     	for(Proposition reward: rewards) {
-    		if(propmarkp(reward.getSingleInput())) {
-    			System.out.println("propReward: returning " + reward);
+    		if(propmarkp((Component)reward)) {
+    			clearPropnet();
+//    			System.out.println("propReward: returning " + reward);
     			return getGoalValue(reward); }
     	}
 
@@ -300,9 +302,9 @@ public class SamplePropNetStateMachine extends StateMachine {
     }
 
     private boolean propTerminal(MachineState state){
-    	System.out.println("\nPROP_TERMINAL()");
+//    	System.out.println("\nPROP_TERMINAL()");
     	markBases(state);
-    	return propmarkp(propNet.getTerminalProposition().getSingleInput());
+    	return propmarkp((Component)propNet.getTerminalProposition());
     }
 
     /**
@@ -311,7 +313,9 @@ public class SamplePropNetStateMachine extends StateMachine {
      */
     @Override
     public boolean isTerminal(MachineState state) {
-        return propTerminal(state);
+        boolean result = propTerminal(state);
+        clearPropnet();
+        return result;
     }
 
     /**

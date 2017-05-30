@@ -124,6 +124,9 @@ public class MCTSHeuristic implements Heuristic {
 		}
 		Map<Role,Integer> result;
 		if(machine.isTerminal(selectedNode.getState())){
+			//for(GdlSentence g : selectedNode.getState().getContents()){
+			//	System.out.println(selectedNode.getState().getContents());
+			//}
 			result = simulate(selectedNode, machine, timeout);
 			backpropagate(selectedNode, result, timeout);
 			return;
@@ -169,6 +172,7 @@ public class MCTSHeuristic implements Heuristic {
 	private void expand(Node node, Role agentRole, StateMachine machine) throws TransitionDefinitionException, MoveDefinitionException{
 		Role roleForChildren = nextPlayer(node.getPlayer());
 		List<Move> moveList = machine.getLegalMoves(node.getState(), roleForChildren);
+		//System.out.println(moveList.size());
 		boolean nextIsAgent = nextPlayer(roleForChildren).equals(agentRole);
 		for(Move move : moveList){
 			Node child = new Node(node, roleForChildren, node.getState(), move);
@@ -178,6 +182,7 @@ public class MCTSHeuristic implements Heuristic {
 				agentNodes.put(successor, child);
 			}
 			node.addChild(child);
+			//System.out.println("child added!");
 		}
 	}
 
@@ -224,7 +229,7 @@ public class MCTSHeuristic implements Heuristic {
 
 	public MachineState performDepthCharge(StateMachine machine, MachineState state, long timeout) throws TransitionDefinitionException, MoveDefinitionException {
         while(!machine.isTerminal(state) && System.currentTimeMillis() < timeout) {
-            state = machine.getNextStateDestructively(state, machine.getRandomJointMove(state));
+            state = machine.getNextState(state, machine.getRandomJointMove(state));
         }
         return state;
     }

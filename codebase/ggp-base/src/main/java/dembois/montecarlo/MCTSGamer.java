@@ -10,7 +10,7 @@ import org.ggp.base.util.statemachine.cache.CachedStateMachine;
 import org.ggp.base.util.statemachine.exceptions.GoalDefinitionException;
 import org.ggp.base.util.statemachine.exceptions.MoveDefinitionException;
 import org.ggp.base.util.statemachine.exceptions.TransitionDefinitionException;
-import org.ggp.base.util.statemachine.implementation.prover.ProverStateMachine;
+import org.ggp.base.util.statemachine.implementation.propnet.SamplePropNetStateMachine;
 
 import dembois.base.BaseHeuristicGamer;
 import dembois.heuristics.MCTSHeuristic;
@@ -19,7 +19,8 @@ public class MCTSGamer extends BaseHeuristicGamer {
 	private MCTSHeuristic mcts;
 	@Override
 	public StateMachine getInitialStateMachine() {
-		return new CachedStateMachine(new ProverStateMachine());
+		return new CachedStateMachine(new SamplePropNetStateMachine());
+		//return new CachedStateMachine(new ProverStateMachine());
 	}
 
 	@Override
